@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:testapp/others/auth.dart';
 import 'package:testapp/screens/login/login_screen.dart';
 
 class HomeScreenAdmin extends StatefulWidget {
@@ -10,7 +10,7 @@ class HomeScreenAdmin extends StatefulWidget {
 }
 
 class _HomeScreenAdminState extends State<HomeScreenAdmin> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  //FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class _HomeScreenAdminState extends State<HomeScreenAdmin> {
               icon: Icon(Icons.logout),
               label: Text("Sign Out"),
               onPressed: () async {
-                await _auth.signOut();
+                await Auth().signOut();
                 Navigator.popAndPushNamed(context, LoginScreen.id);
               },
             ),

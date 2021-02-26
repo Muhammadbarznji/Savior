@@ -4,12 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
 import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
+import 'package:testapp/screens/profile/profile_screen.dart';
 
 final auth = FirebaseAuth.instance;
-final user = FirebaseUser;
-Future<FirebaseUser> getUser() async {
-  return await auth.currentUser();
-}
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -17,7 +14,7 @@ class AppDrawer extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width / 1.2,
       child: Drawer(
-        elevation: 1,
+        elevation: 1.0,
         child: Column(
           children: <Widget>[
             Expanded(
@@ -37,31 +34,24 @@ class AppDrawer extends StatelessWidget {
                           decoration: BoxDecoration(
                               border: Border(
                                   bottom: Divider.createBorderSide(context,
-                                      color: Colors.transparent, width: 0))),
+                                      color: Colors.transparent, width: 0.0))),
                           child: Container(
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 Expanded(
-                                    flex: 2,
-                                    child: Image.asset(
-                                        'assets/images/logo.png')),
+                                    flex: 1,
+                                    child:
+                                        Image.asset('assets/images/logo.png')),
                                 SizedBox(
-                                  width: 20,
+                                  width: 1,
                                 ),
                                 Text(
-                                  'Test',
+                                  'Savior',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w100,
-                                    fontSize: 32.0,
-                                  ),
-                                ),
-                                Text(
-                                  ' APP',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    fontSize: 32.0,
-                                    color: Colors.green,
+                                    fontSize: 52.0,
+                                    letterSpacing: 2.0,
                                   ),
                                 ),
                               ],
@@ -70,51 +60,33 @@ class AppDrawer extends StatelessWidget {
                         ),
                         ListButtons(
                           onTap: () {
-                            Navigator.push(context,
+                            Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                              return;
-                            }));
+                                  return HomeScreen();
+                                }));
                           },
-                          icon: Icons.person_add,
-                          text: 'Link Relative',
+                          icon: 'assets/images/home_icon.png',
+                          text: 'Home',
                         ),
                         ListButtons(
-                          onTap: () {},
-                          icon: Icons.description,
-                          text: 'Instructions',
+                          onTap: () {
+/*                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (context) {
+                                  return HomeScreen();
+                                }));*/
+                          },
+                          icon: 'assets/images/doctor_icon.png',
+                          text: 'Doctors',
                         ),
                         ListButtons(
-                          onTap: () async {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return RichAlertDialog(
-                                    alertTitle:
-                                        richTitle("Log-out from the App"),
-                                    alertSubtitle:
-                                        richSubtitle('Are you Sure '),
-                                    alertType: RichAlertType.WARNING,
-                                    actions: <Widget>[
-                                      FlatButton(
-                                        child: Text("Yes"),
-                                        onPressed: () async {
-                                          await auth.signOut();
-                                          Navigator.pushNamed(
-                                              context, LoadingScreen.id);
-                                        },
-                                      ),
-                                      FlatButton(
-                                        child: Text("No"),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
+                          onTap: () {
+/*                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (context) {
+                                  return null();
+                                }));*/
                           },
-                          icon: Icons.exit_to_app,
-                          text: 'Sign Out',
+                          icon: 'assets/images/hospital_icon.png',
+                          text: 'Hospitalise',
                         ),
                       ],
                     ),
@@ -124,9 +96,45 @@ class AppDrawer extends StatelessWidget {
                           indent: 30,
                           endIndent: 30,
                           thickness: 1.5,
-                          color: Colors.grey.shade200,
+                          color: Colors.grey.shade300,
                         ),
-                        ListButtons(
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: ListButtons(
+                            onTap: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return RichAlertDialog(
+                                      alertTitle:
+                                      richTitle("Log-out from the App"),
+                                      alertSubtitle:
+                                      richSubtitle('Are you Sure '),
+                                      alertType: RichAlertType.WARNING,
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text("Yes"),
+                                          onPressed: () async {
+                                            await auth.signOut();
+                                            Navigator.pushNamed(
+                                                context, LoadingScreen.id);
+                                          },
+                                        ),
+                                        FlatButton(
+                                          child: Text("No"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            icon: 'assets/images/log-out.png',
+                            text: 'Sign Out',
+                          ),
+                        ),
+/*                        ListButtons(
                           onTap: () {},
                           icon: Icons.share,
                           text: 'Share Companion ',
@@ -135,9 +143,32 @@ class AppDrawer extends StatelessWidget {
                           onTap: () {},
                           icon: Icons.help_outline,
                           text: 'Help and Feedback',
-                        ),
+                        ),*/
                         SizedBox(
-                          height: 20,
+                          height: 5.0,
+                        ),
+                        Material(
+                          borderRadius: BorderRadius.circular(500),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(500),
+                            splashColor: Colors.black45,
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: CircleAvatar(
+                              radius: 18.75,
+                              backgroundColor: Colors.black,
+                              child: Icon(Icons.arrow_back, color: Colors.white),
+                            ),
+                          ),
+                        ),
+/*                        ListButtons(
+                          onTap: () {Navigator.of(context).pop();},
+                          icon: Icons.arrow_back,
+                          text: '',
+                        ),*/
+                        SizedBox(
+                          height: 15.0,
                         ),
                       ],
                     )
@@ -156,7 +187,9 @@ class ListButtons extends StatelessWidget {
   final String text;
   final icon;
   final onTap;
+
   ListButtons({this.text, this.icon, this.onTap});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -176,11 +209,12 @@ class ListButtons extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   fontSize: 20),
             ),
-            leading: Icon(
+            leading: ImageIcon(new AssetImage(icon),color: Colors.black,size: 32.5,),
+            /*Icon(
               icon,
-              size: 25,
+              size: 30.0,
               color: Colors.grey.shade600,
-            ),
+            ),*/
           ),
         ),
       ),
@@ -203,6 +237,7 @@ class FormItem extends StatelessWidget {
       this.icon,
       this.isNumber: false,
       this.controller});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -235,36 +270,64 @@ class FormItem extends StatelessWidget {
 }
 
 class TestAppAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final double height = 56;
+  final double height = 56.0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         AppBar(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          leading: IconButton(
+            icon: new Image.asset(
+              'assets/images/navigation_draw_icon.png',
+              width: 30.0,
+              height: 30.0,
+            ),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('Test '),
+              SizedBox(
+                width: 75.0,
+              ),
               Text(
-                'App',
-                style: TextStyle(color: Colors.green),
+                'Savior',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2.8,
+                  fontSize: 28,
+                ),
+              ),
+              Image.asset(
+                'assets/images/logo.png',
+                height: 70.0,
               ),
             ],
           ),
           centerTitle: true,
-          elevation: 1,
+          elevation: 0.0,
           actions: <Widget>[
-            GestureDetector(
-              onTap: () {
-                //Navigator.pushNamed(context, ProfileScreen.id);
-              },
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.white,
-                child: Icon(
-                  Icons.perm_identity,
-                  size: 30,
-                  color: Color(0xff5e444d),
+/*            IconButton(icon: Icon(Icons.icecream), onPressed: (){
+              print('User Profile');
+            }),*/
+            Padding(
+              padding: EdgeInsets.fromLTRB(0.0, 0.0, 5.0, 0.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, ProfileScreen.id);
+                },
+                child: CircleAvatar(
+                  radius: 22.0,
+                  backgroundColor: Colors.grey,
+                  child: Icon(
+                    Icons.perm_identity,
+                    size: 40.0,
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ),

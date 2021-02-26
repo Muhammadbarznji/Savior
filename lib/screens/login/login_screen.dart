@@ -6,6 +6,7 @@ import 'package:testapp/others/auth.dart';
 import 'package:testapp/others/constants.dart';
 import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/home/home_screen_admin.dart';
+import 'package:testapp/screens/loading/loading_screen.dart';
 
 import 'email_auth.dart';
 
@@ -32,7 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  String userId, userRole;
+  bool loading = false;
+  String userId, userRole, error = '';
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -43,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? LoadingScreen(auth: Auth(),): Scaffold(
         resizeToAvoidBottomPadding: false,
         body: SafeArea(
           child: Column(
@@ -167,7 +169,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: 15,
+                          height: 8,
+                        ),
+                        Text(
+                          error,
+                          style: TextStyle(color: Colors.red, fontSize: 14.0),
+                        ),
+                        SizedBox(
+                          height: 8,
                         ),
                         RaisedButton.icon(
                           shape: RoundedRectangleBorder(
@@ -181,7 +190,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
                           onPressed: () async {
                             if (_loginFormKey.currentState.validate()) {
-                              await loginUser();
+                              setState(() {
+                                loading = true;
+                              });
+                              dynamic result = await loginUser();
+                              if(result ==  null){
+                               setState(() {
+                                 loading = false;
+                                 error = 'could not sign in with those credentials';
+                               });
+                              }
                             }
                           },
                           label: Text(
@@ -265,6 +283,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   loginUser() async {
+    try{
     await _auth
         .signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
@@ -287,7 +306,9 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       //Navigator.pushReplacementNamed(context, HomeScreenAdmin.id);
       print('User Role in Here: ' + userRole + ' id = ' + userId);
-    });
+    });}catch(e){
+      return null;
+    }
   }
 
   getCurrentUser() async {
@@ -295,7 +316,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final uid = user.uid;
     userId = uid;
     //final uemail = user.email;
-    print('user id in here: ' + uid + '   ' + userId);
+    //print('user id in here: ' + uid + '   ' + userId);
     //print(uemail);
   }
 }

@@ -7,6 +7,7 @@ import 'package:testapp/screens/login/login_screen.dart';
 class LoadingScreen extends StatefulWidget {
   static const String id = 'Loading_Screen';
 
+
   LoadingScreen({@required this.auth});
   final AuthBase auth;
 
