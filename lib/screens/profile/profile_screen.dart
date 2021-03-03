@@ -28,6 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
+
   getCurrentUser() async {
     await FirebaseAuth.instance.currentUser().then((user) {
       setState(() {

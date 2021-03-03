@@ -271,7 +271,9 @@ class FormItem extends StatelessWidget {
 
 class TestAppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height = 56.0;
+  final String settitle;
 
+  const TestAppAppBar({this.settitle});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -291,10 +293,10 @@ class TestAppAppBar extends StatelessWidget implements PreferredSizeWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                width: 75.0,
+                width: 69.0,
               ),
               Text(
-                'Savior',
+                settitle,
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

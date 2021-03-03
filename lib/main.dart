@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:testapp/screens/doctors/doctor.dart';
 import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/home/home_screen_admin.dart';
+import 'package:testapp/screens/hospital/hospitals_screen.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/screens/login/login_screen.dart';
 import 'package:testapp/screens/profile/profile_screen.dart';
@@ -34,6 +36,8 @@ class TestApp extends StatelessWidget {
             ),
         ProfileScreen.id: (context) => ProfileScreen(),
         //ProfileEdit.id: (context) => ProfileEdit(),
+        Hospital.id: (context) => Hospital(),
+        Doctor.id: (context) => Doctor(),
       },
       theme: ThemeData(
           fontFamily: GoogleFonts.lato().fontFamily,
