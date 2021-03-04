@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:testapp/others/screen_size.dart';
-import 'package:testapp/screens/doctors/doctor.dart';
+import 'package:testapp/screens/doctors/doctor_screen.dart';
 import 'package:testapp/screens/hospital/hospitals_screen.dart';
 import 'package:testapp/widgets/app_default.dart';
 import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
@@ -103,10 +103,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     context, Hospital.id);
                               },
                             ),
+
+
                             Padding(
                               padding: EdgeInsets.only(top: 8.0),
-                              child: Text('Hospital'),
+                              child: Text('Hospital',style: TextStyle(),),
                             ),
+
+
                           ],
                         ),
                       ),
@@ -114,14 +118,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           children: <Widget>[
                             InkWell(
-                              splashColor: Colors.yellowAccent,
+                              splashColor: Colors.blueAccent,
                               child: CardButton(
                                 height: screenHeight * (20 / 100),
                                 width: screenWidth * (35 / 100),
                                 icon: FontAwesomeIcons.userMd,
                                 size: screenWidth * 0.2,
-                                color: Color(0xffE3952D),
-                                borderColor: Color(0xffE3952D).withOpacity(0.75),
+                                color: Colors.blueAccent,
+                                borderColor: Colors.blueAccent.withOpacity(0.75),
                               ),
                               onTap: () {
                                 print('Doctors');

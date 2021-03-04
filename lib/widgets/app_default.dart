@@ -30,31 +30,34 @@ class AppDrawer extends StatelessWidget {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        DrawerHeader(
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: Divider.createBorderSide(context,
-                                      color: Colors.transparent, width: 0.0))),
-                          child: Container(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Expanded(
-                                    flex: 1,
-                                    child:
-                                        Image.asset('assets/images/logo.png')),
-                                SizedBox(
-                                  width: 1,
-                                ),
-                                Text(
-                                  'Savior',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    fontSize: 52.0,
-                                    letterSpacing: 2.0,
+                        Container(
+                          color: Color(0XFF3A6F8D),
+                          child: DrawerHeader(
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: Divider.createBorderSide(context,
+                                        color: Colors.transparent, width: 0.0))),
+                            child: Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 1,
+                                      child:
+                                          Image.asset('assets/images/logo.png')),
+                                  SizedBox(
+                                    width: 1,
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    'Savior',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w100,
+                                      fontSize: 52.0,
+                                      letterSpacing: 2.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -90,87 +93,90 @@ class AppDrawer extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Column(
-                      children: <Widget>[
-                        Divider(
-                          indent: 30,
-                          endIndent: 30,
-                          thickness: 1.5,
-                          color: Colors.grey.shade300,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: ListButtons(
-                            onTap: () async {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return RichAlertDialog(
-                                      alertTitle:
-                                      richTitle("Log-out from the App"),
-                                      alertSubtitle:
-                                      richSubtitle('Are you Sure '),
-                                      alertType: RichAlertType.WARNING,
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text("Yes"),
-                                          onPressed: () async {
-                                            await auth.signOut();
-                                            Navigator.pushNamed(
-                                                context, LoadingScreen.id);
-                                          },
-                                        ),
-                                        FlatButton(
-                                          child: Text("No"),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
-                            icon: 'assets/images/log-out.png',
-                            text: 'Sign Out',
-                          ),
-                        ),
-/*                        ListButtons(
-                          onTap: () {},
-                          icon: Icons.share,
-                          text: 'Share Companion ',
-                        ),
-                        ListButtons(
-                          onTap: () {},
-                          icon: Icons.help_outline,
-                          text: 'Help and Feedback',
-                        ),*/
-                        SizedBox(
-                          height: 5.0,
-                        ),
-                        Material(
-                          borderRadius: BorderRadius.circular(500),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(500),
-                            splashColor: Colors.black45,
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: CircleAvatar(
-                              radius: 18.75,
-                              backgroundColor: Colors.black,
-                              child: Icon(Icons.arrow_back, color: Colors.white),
+                    Container(
+                      color: Color(0XFFC4EBF2),
+                      child: Column(
+                        children: <Widget>[
+/*                          Divider(
+                            indent: 30,
+                            endIndent: 30,
+                            thickness: 1.5,
+                            color: Colors.grey.shade300,
+                          ),*/
+                          Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: ListButtons(
+                              onTap: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return RichAlertDialog(
+                                        alertTitle:
+                                        richTitle("Log-out from the App"),
+                                        alertSubtitle:
+                                        richSubtitle('Are you Sure '),
+                                        alertType: RichAlertType.WARNING,
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text("Yes"),
+                                            onPressed: () async {
+                                              await auth.signOut();
+                                              Navigator.pushNamed(
+                                                  context, LoadingScreen.id);
+                                            },
+                                          ),
+                                          FlatButton(
+                                            child: Text("No"),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                              icon: 'assets/images/log-out.png',
+                              text: 'Sign Out',
                             ),
                           ),
-                        ),
 /*                        ListButtons(
-                          onTap: () {Navigator.of(context).pop();},
-                          icon: Icons.arrow_back,
-                          text: '',
-                        ),*/
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                      ],
+                            onTap: () {},
+                            icon: Icons.share,
+                            text: 'Share Companion ',
+                          ),
+                          ListButtons(
+                            onTap: () {},
+                            icon: Icons.help_outline,
+                            text: 'Help and Feedback',
+                          ),*/
+                          SizedBox(
+                            height: 5.0,
+                          ),
+                          Material(
+                            borderRadius: BorderRadius.circular(500),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(500),
+                              splashColor: Colors.black45,
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: CircleAvatar(
+                                radius: 18.75,
+                                backgroundColor: Colors.black,
+                                child: Icon(Icons.arrow_back, color: Colors.white),
+                              ),
+                            ),
+                          ),
+/*                        ListButtons(
+                            onTap: () {Navigator.of(context).pop();},
+                            icon: Icons.arrow_back,
+                            text: '',
+                          ),*/
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 ),

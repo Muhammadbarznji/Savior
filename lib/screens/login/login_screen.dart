@@ -38,277 +38,270 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  @override
+/*  @override
   void initState() {
     super.initState();
-  }
-
+  }*/
   @override
   Widget build(BuildContext context) {
-    return loading ? LoadingScreen(auth: Auth(),): Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: Image.asset('assets/images/loadingimage.jpg'),
-              ),
-              Card(
-                elevation: 3,
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(20, 8, 20, 20),
-                  child: Form(
-                    key: _loginFormKey,
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'Test ',
-                                style: TextStyle(
-                                  fontSize: 30.0,
-                                ),
+    return loading
+        ? LoadingScreen(
+            auth: Auth(),
+          )
+        : Scaffold(
+            resizeToAvoidBottomPadding: false,
+            body: SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Image.asset('assets/images/loadingimage.jpg'),
+                  ),
+                  Card(
+                    elevation: 3,
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(20, 8, 20, 20),
+                      child: Form(
+                        key: _loginFormKey,
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'Savior',
+                                    style: TextStyle(
+                                      fontSize: 35.0,
+                                      letterSpacing: 1.8,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'APP',
-                                style: TextStyle(
-                                  color: Colors.green,
-                                  fontSize: 30.0,
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(8),
+                              child: TextFormField(
+                                controller: emailController,
+                                style: TextStyle(),
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue,
+                                          style: BorderStyle.solid)),
+                                  errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.red,
+                                          style: BorderStyle.solid)),
+                                  hintText: 'Enter email-address',
+                                  prefixIcon:
+                                      Icon(Icons.email, color: Colors.indigo),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.indigo,
+                                          style: BorderStyle.solid)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue,
+                                          style: BorderStyle.solid)),
                                 ),
+                                onChanged: (v) {
+                                  _loginFormKey.currentState.validate();
+                                },
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter email';
+                                  }
+                                  if (!value.contains('@') ||
+                                      value.length < 5) {
+                                    return 'Enter Valid Email';
+                                  }
+                                  return null;
+                                },
                               ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(8),
-                          child: TextFormField(
-                            controller: emailController,
-                            style: TextStyle(),
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue,
-                                      style: BorderStyle.solid)),
-                              errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.red,
-                                      style: BorderStyle.solid)),
-                              hintText: 'Enter email-address',
-                              prefixIcon:
-                                  Icon(Icons.email, color: Colors.indigo),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.indigo,
-                                      style: BorderStyle.solid)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue,
-                                      style: BorderStyle.solid)),
                             ),
-                            onChanged: (v) {
-                              _loginFormKey.currentState.validate();
-                            },
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter email';
-                              }
-                              if (!value.contains('@') || value.length < 5) {
-                                return 'Enter Valid Email';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(8),
-                          child: TextFormField(
-                            controller: passwordController,
-                            style: TextStyle(),
-                            onChanged: (v) {
-                              _loginFormKey.currentState.validate();
-                            },
-                            obscureText: true,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintText: 'Enter password',
-                              prefixIcon:
-                                  Icon(Icons.lock, color: Colors.indigo),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue,
-                                      style: BorderStyle.solid)),
-                              errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.red,
-                                      style: BorderStyle.solid)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.indigo,
-                                      style: BorderStyle.solid)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue,
-                                      style: BorderStyle.solid)),
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter password';
-                              }
-                              if (value.length < 8) {
-                                return 'Password must be more than 8 characters';
-                              }
+                            Container(
+                              margin: EdgeInsets.all(8),
+                              child: TextFormField(
+                                controller: passwordController,
+                                style: TextStyle(),
+                                onChanged: (v) {
+                                  _loginFormKey.currentState.validate();
+                                },
+                                obscureText: true,
+                                keyboardType: TextInputType.text,
+                                decoration: InputDecoration(
+                                  hintText: 'Enter password',
+                                  prefixIcon:
+                                      Icon(Icons.lock, color: Colors.indigo),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue,
+                                          style: BorderStyle.solid)),
+                                  errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.red,
+                                          style: BorderStyle.solid)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.indigo,
+                                          style: BorderStyle.solid)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue,
+                                          style: BorderStyle.solid)),
+                                ),
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter password';
+                                  }
+                                  if (value.length < 8) {
+                                    return 'Password must be more than 8 characters';
+                                  }
 
-                              return null;
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          error,
-                          style: TextStyle(color: Colors.red, fontSize: 14.0),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        RaisedButton.icon(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          icon: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                          ),
-                          color: Colors.green.shade300,
-                          padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
-                          onPressed: () async {
-                            if (_loginFormKey.currentState.validate()) {
-                              setState(() {
-                                loading = true;
-                              });
-                              dynamic result = await loginUser();
+                                  return null;
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              error,
+                              style:
+                                  TextStyle(color: Colors.red, fontSize: 14.0),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            RaisedButton.icon(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              icon: Icon(
+                                Icons.person,
+                                color: Colors.white,
+                              ),
+                              color: Colors.green.shade300,
+                              padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
+                              onPressed: () async {
+                                if (_loginFormKey.currentState.validate()) {
+                                  print('login');
+                                  await loginUser();
+/*                                  setState(() {
+                                    loading = true;
+                                  });
+                                  dynamic result = await loginUser();
                               if(result ==  null){
                                setState(() {
                                  loading = false;
                                  error = 'could not sign in with those credentials';
                                });
-                              }
-                            }
-                          },
-                          label: Text(
-                            'Sign in',
-                            style: TextStyle(color: Colors.white, fontSize: 22),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 18,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              child: AutoSizeText(
-                                'Don\'t have an account? ',
-                                style: TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return EmailRegister();
-                                }));
+                              }*/
+                                }
                               },
-                              child: Container(
-                                child: AutoSizeText('Sign up',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.blue,
-                                      decoration: TextDecoration.underline,
-                                    )),
+                              label: Text(
+                                'Sign in',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 22),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Image.asset(
-                              kFacebookImage,
-                              height: 55,
                             ),
                             SizedBox(
-                              width: 28,
+                              height: 18,
                             ),
-                            GestureDetector(
-                              onTap: _signInWithGoogle,
-                              child: Image.asset(
-                                kGoogleImage,
-                                height: 55,
-                              ),
-                            )
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  child: AutoSizeText(
+                                    'Don\'t have an account? ',
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return EmailRegister();
+                                    }));
+                                  },
+                                  child: Container(
+                                    child: AutoSizeText('Sign up',
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.blue,
+                                          decoration: TextDecoration.underline,
+                                        )),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Image.asset(
+                                  kFacebookImage,
+                                  height: 55,
+                                ),
+                                SizedBox(
+                                  width: 28,
+                                ),
+                                GestureDetector(
+                                  onTap: _signInWithGoogle,
+                                  child: Image.asset(
+                                    kGoogleImage,
+                                    height: 55,
+                                  ),
+                                )
+                              ],
+                            ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 8,
-              ),
-            ],
-          ),
-        ));
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
+            ));
   }
 
   loginUser() async {
-    try{
     await _auth
         .signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text)
+        email: emailController.text, password: passwordController.text)
         .then((value) async {
-      await getCurrentUser();
-      await Firestore.instance
-          .collection('profile')
-          .document(userId)
-          .get()
-          .then((DocumentSnapshot) => {
-                userRole = DocumentSnapshot.data['role'].toString(),
-                print('User Role is Here: ' +
-                    DocumentSnapshot.data['role'].toString()),
-              });
-        if(userRole == 'admin') {
+        await getCurrentUser();
+        await Firestore.instance
+            .collection('profile')
+            .document(userId)
+            .get()
+            .then((DocumentSnapshot) => {
+          //print('User Role is Here: ' + DocumentSnapshot.data['role'].toString()),
+          userRole = DocumentSnapshot.data['role'].toString(),
+        });
+        if (userRole == 'admin') {
+          print('Admin Admin');
           Navigator.pushReplacementNamed(context, HomeScreenAdmin.id);
-        }
-        else if(userRole == 'user'){
+        } else if (userRole == 'user') {
+          print('User User');
           Navigator.pushReplacementNamed(context, HomeScreen.id);
         }
-      //Navigator.pushReplacementNamed(context, HomeScreenAdmin.id);
-      print('User Role in Here: ' + userRole + ' id = ' + userId);
-    });}catch(e){
-      return null;
-    }
+        //Navigator.pushReplacementNamed(context, HomeScreenAdmin.id);
+        print('User Role in Here: ' + userRole + ' id = ' + userId);
+    });
   }
 
   getCurrentUser() async {
@@ -318,5 +311,12 @@ class _LoginScreenState extends State<LoginScreen> {
     //final uemail = user.email;
     //print('user id in here: ' + uid + '   ' + userId);
     //print(uemail);
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

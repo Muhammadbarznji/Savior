@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:testapp/screens/doctors/doctor.dart';
+import 'package:testapp/screens/doctors/doctor_screen.dart';
 import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/home/home_screen_admin.dart';
 import 'package:testapp/screens/hospital/hospitals_screen.dart';
@@ -16,14 +16,14 @@ Future<void> main() async {
 }
 
 class TestApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+
     precacheImage(AssetImage('assets/images/loadingimage.jpg'), context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Test App',
+      title: 'Savior App',
       initialRoute: LoadingScreen.id,
       routes: {
         HomeScreen.id: (context) => HomeScreen(),

@@ -15,8 +15,12 @@ class _EmailRegisterState extends State<EmailRegister> {
       userNameController,
       confirmPasswordController;
   FirebaseAuth _auth = FirebaseAuth.instance;
+
+
+
   SharedPreferences prefs;
   bool showOnBoarding = false;
+
   initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     showOnBoarding = prefs.getBool('first') ?? true;
@@ -49,8 +53,8 @@ class _EmailRegisterState extends State<EmailRegister> {
           'phoneNumber': ' ',
           'uid': user.user.uid,
           'picture':'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png',
-          'weight': '50',
-          'height': '170',
+          'weight': '',
+          'height': '',
           'bloodPressure': 'Normal',
           'bloodSugar': 'Normal',
           'allergies': 'None',
@@ -293,7 +297,7 @@ class _EmailRegisterState extends State<EmailRegister> {
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
+                        children: [
                           Container(
                             child: Text(
                               'Already have an account? ',

@@ -5,20 +5,20 @@ import 'package:testapp/others/auth.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/widgets/app_default.dart';
 import 'package:testapp/widgets/constant.dart';
-import 'hospital_detail.dart';
 
-class Hospital extends StatefulWidget {
-  static const String id = 'Hospital';
+import 'doctor_detial.dart';
+
+class Doctor extends StatefulWidget {
+  static const String id = 'Doctor';
 
   @override
-  _HospitalState createState() => _HospitalState();
+  _DoctorState createState() => _DoctorState();
 }
 
-class _HospitalState extends State<Hospital> {
+class _DoctorState extends State<Doctor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
 /*      appBar:TestAppAppBar(setcolor: 0xff50d490,),
       drawer: AppDrawer(),
       body: ListPage(),*/
@@ -27,7 +27,7 @@ class _HospitalState extends State<Hospital> {
       backgroundColor: Colors.transparent,
       drawer: AppDrawer(),
       appBar: TestAppAppBar(
-        settitle: 'Hospital',
+        settitle: 'Doctor',
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -115,7 +115,7 @@ class _ListPageState extends State<ListPage> {
   }*/
 
   getUsersPastTripsStreamSnapshots() async {
-    var data = await Firestore.instance.collection('hospital').getDocuments();
+    var data = await Firestore.instance.collection('doctor').getDocuments();
     setState(() {
       _allResults = data.documents;
     });
@@ -125,7 +125,7 @@ class _ListPageState extends State<ListPage> {
 
   Future getPost() async {
     var firestore = await Firestore.instance;
-    QuerySnapshot query = await firestore.collection('hospital').getDocuments();
+    QuerySnapshot query = await firestore.collection('doctor').getDocuments();
     return query.documents;
   }
 
@@ -138,7 +138,7 @@ class _ListPageState extends State<ListPage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
               child: Text(
-                "List of Hospital",
+                "List of Doctor",
                 style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -148,7 +148,7 @@ class _ListPageState extends State<ListPage> {
             ),
             Padding(
               padding:
-                  const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 15.0),
+              const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 15.0),
               child: TextField(
                 controller: _searchController,
                 decoration: textInputDecoration.copyWith(
@@ -179,21 +179,21 @@ class _ListPageState extends State<ListPage> {
                         controller: _scrollController,
                         thickness: 10.0,
                         radius: Radius.circular(27.0),
-                        child: ListView.builder(
+/*                        child: ListView.builder(
                           reverse: false,
                           controller: _scrollController,
                           itemCount: 50,
                           itemBuilder: (context, index) => ListTile(
                             title: Text("Item= ${index + 1}"),
                           ),
-                        ),
-/*                      child: ListView.builder(
+                        ),*/
+                      child: ListView.builder(
                           reverse: false,
                           controller: _scrollController,
                             itemCount: _resultsList.length,
                             itemBuilder: (context, index) =>
                               buildHospitalCard(context, _resultsList[index]),
-                            ),*/
+                            ),
                       ),
                     );
                   }
@@ -230,7 +230,8 @@ Widget buildHospitalCard(BuildContext context, DocumentSnapshot document) {
             maxWidth: 60,
             maxHeight: 60,
           ),
-          child: new Image.network(trip.image),
+          //child: new Image.network(trip.image),
+          child: Image.asset('assets/images/doctor_icon.png'),
         ),
         title: Text(trip.name),
         subtitle: Text(trip.phone),

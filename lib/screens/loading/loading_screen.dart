@@ -53,16 +53,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'Test',
+                          'Savior',
                           style: TextStyle(
                             fontSize: 30.0,
-                          ),
-                        ),
-                        Text(
-                          'APP',
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 30.0,
+                            letterSpacing: 1.5,
                           ),
                         ),
                       ],
@@ -72,7 +66,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                     child: Container(
                       margin: EdgeInsets.only(left: 20, right: 20),
                       child: Text(
-                        'Test APP is Loading',
+                        'Savior is Loading',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w100,

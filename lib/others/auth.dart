@@ -95,8 +95,8 @@ class Auth implements AuthBase {
               'uid': authResult.user.uid,
               'picture':
                   'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png',
-              'weight': '50',
-              'height': '170',
+              'weight': '',
+              'height': '',
               'bloodPressure': 'Normal',
               'bloodSugar': 'Normal',
               'allergies': 'None',
@@ -129,7 +129,6 @@ class Auth implements AuthBase {
   Future signOut() async {
     //final googleSignIn = GoogleSignIn();
     //await googleSignIn.signOut();
-
     return await _firebaseAuth.signOut();
   }
 }
