@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:testapp/models/hospital_data.dart';
+import 'package:testapp/models/doctor_data.dart';
 import 'package:testapp/others/auth.dart';
+import 'package:testapp/screens/doctors/doctor_detial.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/widgets/app_default.dart';
 import 'package:testapp/widgets/constant.dart';
 
-import 'doctor_detial.dart';
 
 class Doctor extends StatefulWidget {
   static const String id = 'Doctor';
@@ -19,9 +19,6 @@ class _DoctorState extends State<Doctor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-/*      appBar:TestAppAppBar(setcolor: 0xff50d490,),
-      drawer: AppDrawer(),
-      body: ListPage(),*/
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
@@ -84,7 +81,7 @@ class _ListPageState extends State<ListPage> {
 
     if (_searchController.text != "") {
       for (var tripSnapshot in _allResults) {
-        var name = Trip.fromSnapshot(tripSnapshot).name.toLowerCase();
+        var name = doctor_data.fromSnapshot(tripSnapshot).name.toLowerCase();
 
         if (name.contains(_searchController.text.toLowerCase())) {
           showResults.add(tripSnapshot);
@@ -192,7 +189,7 @@ class _ListPageState extends State<ListPage> {
                           controller: _scrollController,
                             itemCount: _resultsList.length,
                             itemBuilder: (context, index) =>
-                              buildHospitalCard(context, _resultsList[index]),
+                              buildDoctorCard(context, _resultsList[index]),
                             ),
                       ),
                     );
@@ -210,12 +207,20 @@ class _ListPageState extends State<ListPage> {
   }
 }
 
-Widget buildHospitalCard(BuildContext context, DocumentSnapshot document) {
-  final trip = Trip.fromSnapshot(document);
+Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
+  final doctorData = doctor_data.fromSnapshot(document);
 
-  navigateToDetial(DocumentSnapshot documentSnapshot) {
+  navigateToDetial(DocumentSnapshot documentSnapshot,String imagepath) {
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => DetailPage(documentSnapshot)));
+        MaterialPageRoute(builder: (context) => doctorID(post: documentSnapshot,imagePath: imagepath,)));
+  }
+
+  pickUpImageForDoctor(){
+    if(doctorData.gender.toString().toLowerCase() == 'male'){
+      return 'assets/images/drMale.png';
+    }else{
+      return 'assets/images/drFemale.png';
+    }
   }
 
   return Padding(
@@ -225,17 +230,20 @@ Widget buildHospitalCard(BuildContext context, DocumentSnapshot document) {
       child: ListTile(
         leading: ConstrainedBox(
           constraints: BoxConstraints(
-            minWidth: 40,
-            minHeight: 40,
-            maxWidth: 60,
-            maxHeight: 60,
+            minWidth: 67.0,
+            minHeight: 120.0,
+            maxWidth: 100.0,
+            maxHeight: 120.0,
           ),
           //child: new Image.network(trip.image),
-          child: Image.asset('assets/images/doctor_icon.png'),
+          child: Image.asset(pickUpImageForDoctor(),fit: BoxFit.fill,),
         ),
-        title: Text(trip.name),
-        subtitle: Text(trip.phone),
-        onTap: () => navigateToDetial(document),
+        title: Text(doctorData.name,style: TextStyle(fontSize: 20.0),),
+        subtitle: Text('${doctorData.medicalspecialty} \n'
+            'City: ${doctorData.city} \n'
+          'Work Tome: Form : ${doctorData.workstart}',
+          style: TextStyle(fontSize: 16.0),),
+        onTap: () => navigateToDetial(document,pickUpImageForDoctor()),
       ),
     ),
   );

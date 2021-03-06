@@ -34,24 +34,4 @@ class UserProfile {
     this.role = data['role'];
     return this;
   }
-
-/*  getAllRelatives(var data) {
-    this.relatives = List<Relative>();
-    for (var relative in data) {
-      Relative _relative = Relative();
-      _relative.getData(relative);
-      this.relatives.add(_relative);
-    }
-  }*/
-
-/*  deleteRelative(String documentID) {
-    Relative _relative = Relative();
-    bool found = false;
-    for (var r in this.relatives) {
-      if (r.documentID == documentID) _relative = r;
-    }
-    if (found) {
-      this.relatives.remove(_relative);
-    }
-  }*/
 }

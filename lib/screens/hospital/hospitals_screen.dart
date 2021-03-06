@@ -18,7 +18,6 @@ class _HospitalState extends State<Hospital> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
 /*      appBar:TestAppAppBar(setcolor: 0xff50d490,),
       drawer: AppDrawer(),
       body: ListPage(),*/
@@ -84,7 +83,7 @@ class _ListPageState extends State<ListPage> {
 
     if (_searchController.text != "") {
       for (var tripSnapshot in _allResults) {
-        var name = Trip.fromSnapshot(tripSnapshot).name.toLowerCase();
+        var name = hospital_data.fromSnapshot(tripSnapshot).name.toLowerCase();
 
         if (name.contains(_searchController.text.toLowerCase())) {
           showResults.add(tripSnapshot);
@@ -179,21 +178,21 @@ class _ListPageState extends State<ListPage> {
                         controller: _scrollController,
                         thickness: 10.0,
                         radius: Radius.circular(27.0),
-                        child: ListView.builder(
+/*                        child: ListView.builder(
                           reverse: false,
                           controller: _scrollController,
                           itemCount: 50,
                           itemBuilder: (context, index) => ListTile(
                             title: Text("Item= ${index + 1}"),
                           ),
-                        ),
-/*                      child: ListView.builder(
+                        ),*/
+                      child: ListView.builder(
                           reverse: false,
                           controller: _scrollController,
                             itemCount: _resultsList.length,
                             itemBuilder: (context, index) =>
                               buildHospitalCard(context, _resultsList[index]),
-                            ),*/
+                            ),
                       ),
                     );
                   }
@@ -211,7 +210,7 @@ class _ListPageState extends State<ListPage> {
 }
 
 Widget buildHospitalCard(BuildContext context, DocumentSnapshot document) {
-  final trip = Trip.fromSnapshot(document);
+  final hospitalData = hospital_data.fromSnapshot(document);
 
   navigateToDetial(DocumentSnapshot documentSnapshot) {
     Navigator.push(context,
@@ -230,10 +229,11 @@ Widget buildHospitalCard(BuildContext context, DocumentSnapshot document) {
             maxWidth: 60,
             maxHeight: 60,
           ),
-          child: new Image.network(trip.image),
+          //child: new Image.network(hospitalData.image),
+          child: Image.asset('assets/images/logo.png'),
         ),
-        title: Text(trip.name),
-        subtitle: Text(trip.phone),
+        title: Text(hospitalData.name),
+        subtitle: Text(hospitalData.phone),
         onTap: () => navigateToDetial(document),
       ),
     ),

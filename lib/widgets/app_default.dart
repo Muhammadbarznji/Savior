@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
+import 'package:testapp/screens/doctors/doctor_screen.dart';
 import 'package:testapp/screens/home/home_screen.dart';
+import 'package:testapp/screens/hospital/hospitals_screen.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/screens/profile/profile_screen.dart';
 
@@ -73,20 +74,20 @@ class AppDrawer extends StatelessWidget {
                         ),
                         ListButtons(
                           onTap: () {
-/*                            Navigator.pushReplacement(context,
+                            Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return HomeScreen();
-                                }));*/
+                                  return Doctor();
+                                }));
                           },
                           icon: 'assets/images/doctor_icon.png',
                           text: 'Doctors',
                         ),
                         ListButtons(
                           onTap: () {
-/*                            Navigator.pushReplacement(context,
+                            Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return null();
-                                }));*/
+                                  return Hospital();
+                                }));
                           },
                           icon: 'assets/images/hospital_icon.png',
                           text: 'Hospitalise',
@@ -97,12 +98,6 @@ class AppDrawer extends StatelessWidget {
                       color: Color(0XFFC4EBF2),
                       child: Column(
                         children: <Widget>[
-/*                          Divider(
-                            indent: 30,
-                            endIndent: 30,
-                            thickness: 1.5,
-                            color: Colors.grey.shade300,
-                          ),*/
                           Padding(
                             padding: EdgeInsets.only(left: 8.0),
                             child: ListButtons(
@@ -216,11 +211,6 @@ class ListButtons extends StatelessWidget {
                   fontSize: 20),
             ),
             leading: ImageIcon(new AssetImage(icon),color: Colors.black,size: 32.5,),
-            /*Icon(
-              icon,
-              size: 30.0,
-              color: Colors.grey.shade600,
-            ),*/
           ),
         ),
       ),
@@ -228,6 +218,7 @@ class ListButtons extends StatelessWidget {
   }
 }
 
+/*
 class FormItem extends StatelessWidget {
   final String hintText;
   final String helperText;
@@ -274,6 +265,7 @@ class FormItem extends StatelessWidget {
     );
   }
 }
+*/
 
 class TestAppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height = 56.0;

@@ -6,7 +6,7 @@ import 'package:testapp/screens/hospital/hospitals_screen.dart';
 import 'package:testapp/widgets/app_default.dart';
 import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
 import 'package:testapp/widgets/home_screen_widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'Home_Screen';
@@ -22,24 +22,26 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     double screenWidth = getDeviceWidth(context);
     double screenHeight = getDeviceHeight(context);
-/*    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.red,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-//        backgroundColor: Color(0x44000000),
-        elevation: 0,
-        title: Text("Title"),
-      ),
-      body: Center(child: Text("Content")),
-    );*/
+
+    homeScreenTextStyle(String title) {
+      return Text(
+        title,
+        style: TextStyle(
+          fontSize: 24.0,
+          fontWeight: FontWeight.bold,
+          color: Color(0XFF3A6F8D),
+        ),
+      );
+    }
 
     return Scaffold(
         //endDrawerEnableOpenDragGesture: false,
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.transparent,
         drawer: AppDrawer(),
-        appBar: TestAppAppBar(settitle: 'Savior',),
+        appBar: TestAppAppBar(
+          settitle: 'Savior',
+        ),
         body: WillPopScope(
           onWillPop: () async {
             return showDialog(
@@ -93,24 +95,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: CardButton(
                                 height: screenHeight * 0.2,
                                 width: screenWidth * (35 / 100),
-                                icon: FontAwesomeIcons.hospital,
-                                size: screenWidth * (25 / 100),
-                                color: Color(0xff7b1fa2),
-                                borderColor: Color(0xff7b1fa2).withOpacity(0.75),
+                                imagepath: Image.asset('assets/images/hospital_image.png'),
                               ),
                               onTap: () {
-                                Navigator.pushNamed(
-                                    context, Hospital.id);
+                                Navigator.pushNamed(context, Hospital.id);
                               },
                             ),
-
-
                             Padding(
-                              padding: EdgeInsets.only(top: 8.0),
-                              child: Text('Hospital',style: TextStyle(),),
+                              padding: EdgeInsets.only(top: 8.7),
+                              child: homeScreenTextStyle('Hospital'),
                             ),
-
-
                           ],
                         ),
                       ),
@@ -122,10 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: CardButton(
                                 height: screenHeight * (20 / 100),
                                 width: screenWidth * (35 / 100),
-                                icon: FontAwesomeIcons.userMd,
-                                size: screenWidth * 0.2,
-                                color: Colors.blueAccent,
-                                borderColor: Colors.blueAccent.withOpacity(0.75),
+                                imagepath: Image.asset('assets/images/doctor_image.png'),
                               ),
                               onTap: () {
                                 print('Doctors');
@@ -134,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: 8.0),
-                              child: Text('Doctors'),
+                              child: homeScreenTextStyle('Doctor'),
                             )
                           ],
                         ),
@@ -145,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+
         ));
   }
 }

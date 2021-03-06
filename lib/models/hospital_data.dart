@@ -1,28 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Trip {
-  String name;
-  String phone;
-  String image;
+class hospital_data {
+  String name, phone, image, address;
 
-
-
-  Trip(
-      this.name,
-      this.phone,
-      this.image
-      );
+  hospital_data(
+    this.name,
+    this.phone,
+    this.image,
+    this.address,
+  );
 
   // formatting for upload to Firbase when creating the trip
   Map<String, dynamic> toJson() => {
-    'name': name,
-    'phone': phone,
-    'image': image,
-  };
+        'name': name,
+        'phone': phone,
+        'image': image,
+        'address': address,
+      };
 
   // creating a Trip object from a firebase snapshot
-  Trip.fromSnapshot(DocumentSnapshot snapshot) :
-        name = snapshot['name'],
+  hospital_data.fromSnapshot(DocumentSnapshot snapshot)
+      : name = snapshot['name'],
         phone = snapshot['phone'],
-        image = snapshot['image'];
+        image = snapshot['image'],
+        address = snapshot['address'];
 }
