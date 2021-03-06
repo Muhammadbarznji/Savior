@@ -18,6 +18,21 @@ class _HospitalState extends State<Hospital> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 40.0),
+        child: FloatingActionButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          child: Icon(
+            Icons.arrow_back,
+            color: Color(0XFF3A6F8D),
+            size: 28.0,
+          ),
+        ),
+      ),
 /*      appBar:TestAppAppBar(setcolor: 0xff50d490,),
       drawer: AppDrawer(),
       body: ListPage(),*/
@@ -131,80 +146,80 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Container(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
-              child: Text(
-                "List of Hospital",
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0XFF3A6F8D),
-                    letterSpacing: 1.5),
+        child: Container(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
+                child: Text(
+                  "List of Hospital",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0XFF3A6F8D),
+                      letterSpacing: 1.5),
+                ),
               ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 15.0),
-              child: TextField(
-                controller: _searchController,
-                decoration: textInputDecoration.copyWith(
-                  hintText: 'Search',
-                  suffixIcon: Icon(
-                    Icons.search,
-                    color: Color(0XFF3A6F8D),
-                    size: 27.5,
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 15.0),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: textInputDecoration.copyWith(
+                    hintText: 'Search',
+                    suffixIcon: Icon(
+                      Icons.search,
+                      color: Color(0XFF3A6F8D),
+                      size: 27.5,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: FutureBuilder(
-                future: _data,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: LoadingScreen(auth: Auth()),
-                    );
-                  } else {
-                    return Theme(
-                      data: ThemeData(
-                        highlightColor: Color(0XFF3A6F8D),
-                      ),
-                      child: Scrollbar(
-                        isAlwaysShown: _resultsList.length > 5 ? true : false,
-                        controller: _scrollController,
-                        thickness: 10.0,
-                        radius: Radius.circular(27.0),
+              Expanded(
+                child: FutureBuilder(
+                  future: _data,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: LoadingScreen(auth: Auth()),
+                      );
+                    } else {
+                      return Theme(
+                        data: ThemeData(
+                          highlightColor: Color(0XFF3A6F8D),
+                        ),
+                        child: Scrollbar(
+                          isAlwaysShown: _resultsList.length > 5 ? true : false,
+                          controller: _scrollController,
+                          thickness: 10.0,
+                          radius: Radius.circular(27.0),
 /*                        child: ListView.builder(
-                          reverse: false,
-                          controller: _scrollController,
-                          itemCount: 50,
-                          itemBuilder: (context, index) => ListTile(
-                            title: Text("Item= ${index + 1}"),
-                          ),
-                        ),*/
-                      child: ListView.builder(
-                          reverse: false,
-                          controller: _scrollController,
-                            itemCount: _resultsList.length,
-                            itemBuilder: (context, index) =>
-                              buildHospitalCard(context, _resultsList[index]),
+                            reverse: false,
+                            controller: _scrollController,
+                            itemCount: 50,
+                            itemBuilder: (context, index) => ListTile(
+                              title: Text("Item= ${index + 1}"),
                             ),
-                      ),
-                    );
-                  }
-                },
+                          ),*/
+                        child: ListView.builder(
+                            reverse: false,
+                            controller: _scrollController,
+                              itemCount: _resultsList.length,
+                              itemBuilder: (context, index) =>
+                                buildHospitalCard(context, _resultsList[index]),
+                              ),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
-            ),
-            SizedBox(
-              height: 80.0,
-            ),
-          ],
+              SizedBox(
+                height: 80.0,
+              ),
+            ],
+          ),
         ),
-      ),
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:testapp/models/relative.dart';
+
 
 class UserProfile {
   String allergies,
@@ -15,8 +15,8 @@ class UserProfile {
       picture,
       role,
       uid;
-  List<Relative> relatives;
   UserProfile(this.uid);
+
   setData(Map<String, dynamic> data) {
     this.uid = data['uid'];
     this.phoneNumber = data['phoneNumber'];

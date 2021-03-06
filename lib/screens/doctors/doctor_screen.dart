@@ -19,6 +19,21 @@ class _DoctorState extends State<Doctor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 40.0),
+        child: FloatingActionButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          child: Icon(
+            Icons.arrow_back,
+            color: Color(0XFF3A6F8D),
+            size: 28.0,
+          ),
+        ),
+      ),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,

@@ -1,11 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testapp/others/auth.dart';
 import 'package:testapp/others/constants.dart';
 import 'package:testapp/screens/home/home_screen.dart';
-import 'package:testapp/screens/home/home_screen_admin.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
 
 import 'email_auth.dart';
@@ -38,10 +36,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-/*  @override
+  @override
   void initState() {
     super.initState();
-  }*/
+  }
+
   @override
   Widget build(BuildContext context) {
     return loading
@@ -178,6 +177,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 8,
                             ),
                             RaisedButton.icon(
+                              label: Text(
+                                'Sign in',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 22),
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -189,25 +193,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
                               onPressed: () async {
                                 if (_loginFormKey.currentState.validate()) {
-                                  print('login');
-                                  await loginUser();
-/*                                  setState(() {
+                                  setState(() {
                                     loading = true;
                                   });
-                                  dynamic result = await loginUser();
-                              if(result ==  null){
-                               setState(() {
-                                 loading = false;
-                                 error = 'could not sign in with those credentials';
-                               });
-                              }*/
+                                  try {
+                                    await loginUser();
+                                  } catch (e) {}
+                                  setState(() {
+                                    passwordController.clear();
+                                    loading = false;
+                                    error =
+                                        'could not sign in with those credentials';
+                                  });
                                 }
                               },
-                              label: Text(
-                                'Sign in',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 22),
-                              ),
                             ),
                             SizedBox(
                               height: 18,
@@ -279,38 +278,46 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   loginUser() async {
-    await _auth
+    return await _auth
         .signInWithEmailAndPassword(
-        email: emailController.text, password: passwordController.text)
-        .then((value) async {
-        await getCurrentUser();
-        await Firestore.instance
-            .collection('profile')
-            .document(userId)
-            .get()
-            .then((DocumentSnapshot) => {
-          //print('User Role is Here: ' + DocumentSnapshot.data['role'].toString()),
-          userRole = DocumentSnapshot.data['role'].toString(),
-        });
-        if (userRole == 'admin') {
-          print('Admin Admin');
-          Navigator.pushReplacementNamed(context, HomeScreenAdmin.id);
-        } else if (userRole == 'user') {
-          print('User User');
-          Navigator.pushReplacementNamed(context, HomeScreen.id);
-        }
-        //Navigator.pushReplacementNamed(context, HomeScreenAdmin.id);
-        print('User Role in Here: ' + userRole + ' id = ' + userId);
+            email: emailController.text, password: passwordController.text)
+        .then((value) {
+      Navigator.pushReplacementNamed(context, HomeScreen.id);
     });
   }
 
+  /*loginUser() async {
+    await _auth
+        .signInWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text)
+        .then((value) async {
+      await getCurrentUser();
+      await Firestore.instance
+          .collection('profile')
+          .document(userId)
+          .get()
+          .then((value1) => {
+                print('User Role is Here: ' + value1.data['role'].toString()),
+                userRole = value1.data['role'],
+
+              });
+      if (value1.data['role']) {
+        print('Admin Admin'),
+      Navigator.pushReplacementNamed(context, HomeScreenAdmin.id),
+      } else {
+      print('User User'),
+      Navigator.pushReplacementNamed(context, HomeScreen.id),
+      }
+      //Navigator.pushReplacementNamed(context, HomeScreen.id);
+      print('User Role in Here: ' + userRole + ' id = ' + userId);
+    });
+  }*/
+
   getCurrentUser() async {
-    final FirebaseUser user = await _auth.currentUser();
-    final uid = user.uid;
-    userId = uid;
-    //final uemail = user.email;
-    //print('user id in here: ' + uid + '   ' + userId);
-    //print(uemail);
+    await FirebaseAuth.instance.currentUser().then((user) {
+      userId = user.uid;
+      print(userId);
+    });
   }
 
   @override

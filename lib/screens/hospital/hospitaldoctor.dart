@@ -92,9 +92,9 @@ class _ListOfDoctorInHospitalState extends State<ListOfDoctorInHospital> {
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 7.0, 0.0, 7.0),
+                padding: const EdgeInsets.fromLTRB(10.0, 7.0, 0.0, 7.0),
                 child: Text(
-                  "List of Doctor",
+                  "List of Doctor:",
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

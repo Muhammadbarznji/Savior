@@ -56,6 +56,10 @@ class _doctorIDState extends State<doctorID> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white,size: 30.0,),
+            onPressed: () => Navigator.pop(context),
+          ),
           title: Text(
             widget.post.data['name'],
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
