@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:testapp/others/screen_size.dart';
 import 'package:testapp/screens/doctors/doctor_screen.dart';
 import 'package:testapp/screens/hospital/hospitals_screen.dart';
+import 'package:testapp/screens/medkit/firstaid.dart';
 import 'package:testapp/widgets/app_default.dart';
 import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
 import 'package:testapp/widgets/home_screen_widgets.dart';
-
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'Home_Screen';
@@ -17,6 +17,33 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   //FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return RichAlertDialog(
+                alertTitle: richTitle("Exit the App"),
+                alertSubtitle: richSubtitle('Are you Sure '),
+                alertType: RichAlertType.WARNING,
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("Yes", style: TextStyle(color: Colors.blue)),
+                    onPressed: () {
+                      SystemNavigator.pop();
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("No", style: TextStyle(color: Colors.red)),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              );
+            })) ??
+        false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,31 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
           settitle: 'Savior',
         ),
         body: WillPopScope(
-          onWillPop: () async {
-            return showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return RichAlertDialog(
-                    alertTitle: richTitle("Exit the App"),
-                    alertSubtitle: richSubtitle('Are you Sure '),
-                    alertType: RichAlertType.WARNING,
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text("Yes"),
-                        onPressed: () {
-                          SystemNavigator.pop();
-                        },
-                      ),
-                      FlatButton(
-                        child: Text("No"),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  );
-                });
-          },
+          onWillPop: _onWillPop,
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -91,11 +94,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           children: <Widget>[
                             InkWell(
-                              splashColor: Colors.purple,
                               child: CardButton(
                                 height: screenHeight * 0.2,
                                 width: screenWidth * (35 / 100),
-                                imagepath: Image.asset('assets/images/hospital_image.png'),
+                                imagepath: Image.asset(
+                                    'assets/images/hospital_image.png'),
                               ),
                               onTap: () {
                                 Navigator.pushNamed(context, Hospital.id);
@@ -112,14 +115,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           children: <Widget>[
                             InkWell(
-                              splashColor: Colors.blueAccent,
                               child: CardButton(
                                 height: screenHeight * (20 / 100),
                                 width: screenWidth * (35 / 100),
-                                imagepath: Image.asset('assets/images/doctor_image.png'),
+                                imagepath: Image.asset(
+                                    'assets/images/doctor_image.png'),
                               ),
                               onTap: () {
-                                print('Doctors');
                                 Navigator.pushNamed(context, Doctor.id);
                               },
                             ),
@@ -132,11 +134,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     ],
                   ),
+                  SizedBox(
+                    height: screenHeight * 0.03,
+                  ),
+
+                  //second row
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            InkWell(
+                              child: CardButton(
+                                height: screenHeight * 0.2,
+                                width: screenWidth * (35 / 100),
+                                imagepath: Image.asset(
+                                    'assets/images/medkit.png'),
+                              ),
+                              onTap: () {
+                                Navigator.pushNamed(context, FirstAid.id);
+                              },
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 8.7),
+                              child: homeScreenTextStyle('First Aid'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
           ),
-
         ));
   }
 }

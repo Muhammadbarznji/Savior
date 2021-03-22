@@ -4,19 +4,19 @@ class hospital_data {
   String name, phone, image, address;
 
   hospital_data(
-    this.name,
-    this.phone,
-    this.image,
-    this.address,
-  );
+      this.name,
+      this.phone,
+      this.image,
+      this.address,
+      );
 
   // formatting for upload to Firbase when creating the trip
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'phone': phone,
-        'image': image,
-        'address': address,
-      };
+    'name': name,
+    'phone': phone,
+    'image': image,
+    'address': address,
+  };
 
   // creating a Trip object from a firebase snapshot
   hospital_data.fromSnapshot(DocumentSnapshot snapshot)

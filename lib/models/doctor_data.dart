@@ -33,20 +33,20 @@ class doctor_data {
 
   // formatting for upload to Firbase when creating the trip
   Map<String, dynamic> toJson() => {
-        'address': address,
-        'city': city,
-        'country': country,
-        'graduationuniversity': graduationuniversity,
-        'holiday': holidays,
-        'medicalspecialty': medicalspecialty,
-        'name': name,
-        'otherexperiance': otherexperiance,
-        'reservationmobileno': reservationmobileno,
-        'universityofspecialization': universityofspecialization,
-        'workstart': workstart,
-        'gender': gender,
-        'hospital': hospital,
-      };
+    'address': address,
+    'city': city,
+    'country': country,
+    'graduationuniversity': graduationuniversity,
+    'holiday': holidays,
+    'medicalspecialty': medicalspecialty,
+    'name': name,
+    'otherexperiance': otherexperiance,
+    'reservationmobileno': reservationmobileno,
+    'universityofspecialization': universityofspecialization,
+    'workstart': workstart,
+    'gender': gender,
+    'hospital': hospital,
+  };
 
   // creating a Trip object from a firebase snapshot
   doctor_data.fromSnapshot(DocumentSnapshot snapshot)

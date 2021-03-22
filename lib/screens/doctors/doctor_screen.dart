@@ -160,7 +160,7 @@ class _ListPageState extends State<ListPage> {
             ),
             Padding(
               padding:
-              const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 15.0),
+              const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10.0),
               child: TextField(
                 controller: _searchController,
                 decoration: textInputDecoration.copyWith(
@@ -199,13 +199,13 @@ class _ListPageState extends State<ListPage> {
                             title: Text("Item= ${index + 1}"),
                           ),
                         ),*/
-                      child: ListView.builder(
+                        child: ListView.builder(
                           reverse: false,
                           controller: _scrollController,
-                            itemCount: _resultsList.length,
-                            itemBuilder: (context, index) =>
+                          itemCount: _resultsList.length,
+                          itemBuilder: (context, index) =>
                               buildDoctorCard(context, _resultsList[index]),
-                            ),
+                        ),
                       ),
                     );
                   }
@@ -256,7 +256,7 @@ Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
         title: Text(doctorData.name,style: TextStyle(fontSize: 20.0),),
         subtitle: Text('${doctorData.medicalspecialty} \n'
             'City: ${doctorData.city} \n'
-          'Work Tome: Form : ${doctorData.workstart}',
+            'Work Tome: Form : ${doctorData.workstart}',
           style: TextStyle(fontSize: 16.0),),
         onTap: () => navigateToDetial(document,pickUpImageForDoctor()),
       ),
@@ -268,13 +268,10 @@ Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
 /*
 class DetailPage extends StatefulWidget {
   final DocumentSnapshot post;
-
   DetailPage(this.post);
-
   @override
   _DetailPageState createState() => _DetailPageState();
 }
-
 class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {

@@ -37,15 +37,16 @@ class AppDrawer extends StatelessWidget {
                             decoration: BoxDecoration(
                                 border: Border(
                                     bottom: Divider.createBorderSide(context,
-                                        color: Colors.transparent, width: 0.0))),
+                                        color: Colors.transparent,
+                                        width: 0.0))),
                             child: Container(
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Expanded(
                                       flex: 1,
-                                      child:
-                                          Image.asset('assets/images/logo.png')),
+                                      child: Image.asset(
+                                          'assets/images/logo.png')),
                                   SizedBox(
                                     width: 1,
                                   ),
@@ -66,8 +67,8 @@ class AppDrawer extends StatelessWidget {
                           onTap: () {
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return HomeScreen();
-                                }));
+                              return HomeScreen();
+                            }));
                           },
                           icon: 'assets/images/home_icon.png',
                           text: 'Home',
@@ -76,8 +77,8 @@ class AppDrawer extends StatelessWidget {
                           onTap: () {
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return Doctor();
-                                }));
+                              return Doctor();
+                            }));
                           },
                           icon: 'assets/images/doctor_icon.png',
                           text: 'Doctors',
@@ -86,8 +87,8 @@ class AppDrawer extends StatelessWidget {
                           onTap: () {
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                                  return Hospital();
-                                }));
+                              return Hospital();
+                            }));
                           },
                           icon: 'assets/images/hospital_icon.png',
                           text: 'Hospitalise',
@@ -107,13 +108,15 @@ class AppDrawer extends StatelessWidget {
                                     builder: (BuildContext context) {
                                       return RichAlertDialog(
                                         alertTitle:
-                                        richTitle("Log-out from the App"),
+                                            richTitle("Log-out from the App"),
                                         alertSubtitle:
-                                        richSubtitle('Are you Sure '),
+                                            richSubtitle('Are you Sure '),
                                         alertType: RichAlertType.WARNING,
                                         actions: <Widget>[
                                           FlatButton(
-                                            child: Text("Yes"),
+                                            child: Text("Yes",
+                                                style: TextStyle(
+                                                    color: Colors.blue)),
                                             onPressed: () async {
                                               await auth.signOut();
                                               Navigator.pushNamed(
@@ -121,7 +124,9 @@ class AppDrawer extends StatelessWidget {
                                             },
                                           ),
                                           FlatButton(
-                                            child: Text("No"),
+                                            child: Text("No",
+                                                style: TextStyle(
+                                                    color: Colors.red)),
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
@@ -158,7 +163,8 @@ class AppDrawer extends StatelessWidget {
                               child: CircleAvatar(
                                 radius: 18.75,
                                 backgroundColor: Colors.black,
-                                child: Icon(Icons.arrow_back, color: Colors.white),
+                                child:
+                                    Icon(Icons.arrow_back, color: Colors.white),
                               ),
                             ),
                           ),
@@ -210,7 +216,11 @@ class ListButtons extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   fontSize: 20),
             ),
-            leading: ImageIcon(new AssetImage(icon),color: Colors.black,size: 32.5,),
+            leading: ImageIcon(
+              new AssetImage(icon),
+              color: Colors.black,
+              size: 32.5,
+            ),
           ),
         ),
       ),
@@ -226,7 +236,6 @@ class FormItem extends StatelessWidget {
   final bool isNumber;
   final IconData icon;
   final controller;
-
   FormItem(
       {this.hintText,
       this.helperText,
@@ -234,7 +243,6 @@ class FormItem extends StatelessWidget {
       this.icon,
       this.isNumber: false,
       this.controller});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -272,6 +280,7 @@ class TestAppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String settitle;
 
   const TestAppAppBar({this.settitle});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -288,11 +297,10 @@ class TestAppAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            //after first aid
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(
-                width: 69.0,
-              ),
               Text(
                 settitle,
                 style: TextStyle(

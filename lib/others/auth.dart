@@ -71,7 +71,7 @@ class Auth implements AuthBase {
         );
 
         final QuerySnapshot result =
-            await Firestore.instance.collection('profile').getDocuments();
+        await Firestore.instance.collection('profile').getDocuments();
         final List<DocumentSnapshot> documents = result.documents;
         bool userExits = false;
         for (var document in documents) {
@@ -82,7 +82,6 @@ class Auth implements AuthBase {
         prefs = await SharedPreferences.getInstance();
 
         if (!userExits) {
-          print('User');
           //prefs.setBool('first', true);
           try {
             await Firestore.instance
@@ -94,7 +93,7 @@ class Auth implements AuthBase {
               'phoneNumber': authResult.user.phoneNumber ?? ' ',
               'uid': authResult.user.uid,
               'picture':
-                  'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png',
+              'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png',
               'weight': '',
               'height': '',
               'bloodPressure': 'Normal',
@@ -103,7 +102,7 @@ class Auth implements AuthBase {
               'bloodGroup': 'Not Set',
               'age': '25',
               'gender': 'Not Set',
-              'role': 'user',
+              'role': false,
             });
           } catch (e) {
             print(e.toString());

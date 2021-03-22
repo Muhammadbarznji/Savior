@@ -56,13 +56,13 @@ class _ListOfDoctorInHospitalState extends State<ListOfDoctorInHospital> {
   searchResultsList() {
     var showResults = [];
 
-      for (var tripSnapshot in _allResults) {
-        var hospital = doctor_data.fromSnapshot(tripSnapshot).hospital.toLowerCase();
+    for (var tripSnapshot in _allResults) {
+      var hospital = doctor_data.fromSnapshot(tripSnapshot).hospital.toLowerCase();
 
-        if (hospital.contains(widget.hospitalName.toLowerCase())) {
-          showResults.add(tripSnapshot);
-        }
+      if (hospital.contains(widget.hospitalName.toLowerCase())) {
+        showResults.add(tripSnapshot);
       }
+    }
     setState(() {
       _resultsList = showResults;
     });
@@ -145,7 +145,7 @@ class _ListOfDoctorInHospitalState extends State<ListOfDoctorInHospital> {
                           title: Text("Item= ${index + 1}"),
                         ),
                       ),*/
-                        child: ListView.builder(
+                      child: ListView.builder(
                         reverse: false,
                         controller: _scrollController,
                         itemCount: _resultsList.length,

@@ -12,6 +12,8 @@ class doctorID extends StatefulWidget {
 }
 
 class _doctorIDState extends State<doctorID> {
+
+  //function for Text field
   buildTextDetial(String titletext, String typeofdata) {
     return Padding(
       padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 3.0),
@@ -162,7 +164,7 @@ class _doctorIDState extends State<doctorID> {
           ],
         )
 
-        /* Padding(
+      /* Padding(
         padding: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,13 +198,9 @@ class _doctorIDState extends State<doctorID> {
             SizedBox(
               height: 10.0,
             ),
-
-
-
-
           ],
         ),
       ),*/
-        );
+    );
   }
 }

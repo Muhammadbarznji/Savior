@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testapp/screens/home/home_screen.dart';
+import 'package:testapp/screens/loading/onBoarding_screen.dart';
 
 class EmailRegister extends StatefulWidget {
   @override
@@ -41,7 +42,7 @@ class _EmailRegisterState extends State<EmailRegister> {
   Future addUser() async {
     await _auth
         .createUserWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text)
+        email: emailController.text, password: passwordController.text)
         .then((user) async {
       try {
         await Firestore.instance
@@ -61,14 +62,13 @@ class _EmailRegisterState extends State<EmailRegister> {
           'bloodGroup': 'Not Set',
           'age': '25',
           'gender': 'Not Set',
-          'role': 'user',
+          'role': false,
         });
         prefs.setBool('first', true);
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) {
-              print('first time');
-          return HomeScreen();
-        }));
+              return OnBoardingScreen();
+            }));
       } catch (e) {
         print(e.toString());
       }
@@ -110,7 +110,7 @@ class _EmailRegisterState extends State<EmailRegister> {
                           decoration: InputDecoration(
                             hintText: 'Enter user name',
                             prefixIcon:
-                                Icon(Icons.person, color: Colors.indigo),
+                            Icon(Icons.person, color: Colors.indigo),
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.blue,

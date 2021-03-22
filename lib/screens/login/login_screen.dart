@@ -1,10 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testapp/others/auth.dart';
 import 'package:testapp/others/constants.dart';
+import 'package:testapp/screens/home/admin.dart';
 import 'package:testapp/screens/home/home_screen.dart';
+
 import 'package:testapp/screens/loading/loading_screen.dart';
+import 'package:testapp/screens/loading/onBoarding_screen.dart';
 
 import 'email_auth.dart';
 
@@ -31,14 +36,23 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  bool loading = false;
-  String userId, userRole, error = '';
+  bool loading = false, userRole;
+  String userId, error = '';
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  SharedPreferences prefs;
+  bool showOnBoarding = false;
+
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    showOnBoarding = prefs.getBool('first') ?? true;
+  }
 
   @override
   void initState() {
     super.initState();
+    initPrefs();
   }
 
   @override
@@ -199,12 +213,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   try {
                                     await loginUser();
                                   } catch (e) {}
-                                  setState(() {
-                                    passwordController.clear();
-                                    loading = false;
-                                    error =
-                                        'could not sign in with those credentials';
-                                  });
+                              setState(() {
+                                passwordController.clear();
+                                loading = false;
+                                error =
+                                'could not sign in with those credentials';
+                              })
+                                  ;
                                 }
                               },
                             ),
@@ -277,53 +292,59 @@ class _LoginScreenState extends State<LoginScreen> {
             ));
   }
 
-  loginUser() async {
+/*  loginUser() async {
     return await _auth
         .signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text)
+        email: emailController.text, password: passwordController.text)
         .then((value) {
-      Navigator.pushReplacementNamed(context, HomeScreen.id);
+      Navigator.pushReplacementNamed(context, Admin.id);
     });
-  }
+  }*/
 
-  /*loginUser() async {
+  loginUser() async {
     await _auth
         .signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text)
         .then((value) async {
-      await getCurrentUser();
-      await Firestore.instance
-          .collection('profile')
-          .document(userId)
-          .get()
-          .then((value1) => {
-                print('User Role is Here: ' + value1.data['role'].toString()),
-                userRole = value1.data['role'],
-
-              });
-      if (value1.data['role']) {
-        print('Admin Admin'),
-      Navigator.pushReplacementNamed(context, HomeScreenAdmin.id),
+      if (!showOnBoarding) {
+        await getCurrentUser();
+        await Firestore.instance
+            .collection('profile')
+            .document(userId)
+            .get()
+            .then((DocumentSnapshot) => {
+                  userRole = DocumentSnapshot.data['role'],
+                  if (userRole)
+                    {
+                      Navigator.pushReplacementNamed(context, Admin.id),
+                    }
+                  else
+                    {
+                      if (userRole == false)
+                        {
+                          Navigator.pushReplacementNamed(
+                              context, HomeScreen.id),
+                        }
+                    }
+                });
       } else {
-      print('User User'),
-      Navigator.pushReplacementNamed(context, HomeScreen.id),
+        Navigator.pushReplacementNamed(context, OnBoardingScreen.id);
       }
-      //Navigator.pushReplacementNamed(context, HomeScreen.id);
-      print('User Role in Here: ' + userRole + ' id = ' + userId);
     });
-  }*/
+
+    print('User Role in Here: ' + userRole.toString() + ' id = ' + userId);
+  }
 
   getCurrentUser() async {
     await FirebaseAuth.instance.currentUser().then((user) {
       userId = user.uid;
-      print(userId);
     });
   }
 
-  @override
+/*  @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
-  }
+  }*/
 }

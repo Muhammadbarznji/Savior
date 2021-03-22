@@ -61,17 +61,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
           centerTitle: true,
-          elevation: 1,
+          elevation: 1.2,
           actions: <Widget>[
-            GestureDetector(
-              onTap: () {},
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.blue.shade50,
-                child: Icon(
-                  Icons.perm_identity,
-                  size: 30,
-                  color: Color(0xff5e444d),
+            Padding(
+              padding: const EdgeInsets.only(right: 5.0,),
+              child: GestureDetector(
+                onTap: () {},
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.blue.shade50,
+                  child: Icon(
+                    Icons.perm_identity,
+                    size: 30,
+                    color: Color(0xff5e444d),
+                  ),
                 ),
               ),
             ),
@@ -99,13 +102,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: 170,
                               decoration: BoxDecoration(
                                   border:
-                                      Border.all(width: 5, color: Colors.white),
+                                  Border.all(width: 5, color: Colors.white),
                                   borderRadius: BorderRadius.circular(2000),
                                   shape: BoxShape.rectangle,
                                   image: DecorationImage(
                                       fit: BoxFit.fill,
                                       image:
-                                          NetworkImage(userProfile.picture)))),
+                                      NetworkImage(userProfile.picture)))),
                           Positioned(
                             bottom: 0,
                             right: 0,

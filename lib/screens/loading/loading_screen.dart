@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:testapp/others/auth.dart';
+import 'package:testapp/screens/home/admin.dart';
 import 'package:testapp/screens/home/home_screen.dart';
+import 'package:testapp/screens/loading/nointernet_screen.dart';
 import 'package:testapp/screens/login/login_screen.dart';
+import 'dart:async';
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 class LoadingScreen extends StatefulWidget {
   static const String id = 'Loading_Screen';
 
-
   LoadingScreen({@required this.auth});
+
+
   final AuthBase auth;
 
   @override
@@ -18,74 +25,120 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   Image myImage;
 
+  bool _connectionStatus = false;
+  final Connectivity _connectivity = Connectivity();
+  StreamSubscription<ConnectivityResult> _connectivitySubscription;
+
   @override
   void initState() {
     super.initState();
     myImage = Image.asset('assets/images/loadingimage.jpg');
+    initConnectivity();
+    _connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription.cancel();
+    super.dispose();
+  }
+
+  Future<void> initConnectivity() async {
+    ConnectivityResult result = ConnectivityResult.none;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    switch (result) {
+      case ConnectivityResult.wifi:
+      case ConnectivityResult.mobile:
+        setState(() => _connectionStatus = true);
+        break;
+      default:
+        setState(() => _connectionStatus = false);
+        break;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User>(
-        stream: widget.auth.onAuthStateChanged,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            User user = snapshot.data;
-            if (user == null) {
-              return LoginScreen(
-                auth: widget.auth,
-              );
-            }
-
-            return HomeScreen();
-          } else {
-            return Scaffold(
-              body: Column(
-                children: <Widget>[
-                  Expanded(
-                    flex: 4,
-                    child: myImage,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Savior',
-                          style: TextStyle(
-                            fontSize: 30.0,
-                            letterSpacing: 1.5,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      child: Text(
-                        'Savior is Loading',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w100,
+    return _connectionStatus
+        ? StreamBuilder<User>(
+            stream: widget.auth.onAuthStateChanged,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                User user = snapshot.data;
+                if (user == null) {
+                  return LoginScreen(
+                    auth: widget.auth,
+                  );
+                } else {
+                  if(user.uid == 'Uf2orSFtLEQkwTueh1YQ1wbZpbX2') {
+                    return Admin();
+                  }else{
+                    return HomeScreen();
+                  }
+                }
+              } else {
+                return Scaffold(
+                  body: Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 4,
+                        child: myImage,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Savior',
+                              style: TextStyle(
+                                fontSize: 30.0,
+                                letterSpacing: 1.5,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: Text(
+                            'Savior is Loading',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w100,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: SpinKitFadingCube(
+                          color: Colors.greenAccent,
+                          size: 50.0,
+                        ),
+                      )
+                    ],
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: SpinKitFadingCube(
-                      color: Colors.greenAccent,
-                      size: 50.0,
-                    ),
-                  )
-                ],
-              ),
-            );
-          }
-        }
-        );
+                );
+              }
+            })
+        : NoInternetConnection();
   }
 }
