@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:testapp/models/doctor_data.dart';
+import 'package:testapp/models/firstaid_data.dart';
 import 'package:testapp/others/auth.dart';
+import 'package:testapp/others/constants.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
+import 'package:testapp/screens/loading/waiting_screen.dart';
 import 'package:testapp/screens/medkit/meddetails.dart';
 import 'package:testapp/widgets/app_default.dart';
-import 'package:testapp/widgets/constant.dart';
+
 
 
 class FirstAid extends StatefulWidget {
@@ -96,7 +98,7 @@ class _ListPageState extends State<ListPage> {
 
     if (_searchController.text != "") {
       for (var tripSnapshot in _allResults) {
-        var name = doctor_data.fromSnapshot(tripSnapshot).name.toLowerCase();
+        var name = FirstAid_data.fromSnapshot(tripSnapshot).title.toLowerCase();
 
         if (name.contains(_searchController.text.toLowerCase())) {
           showResults.add(tripSnapshot);
@@ -111,7 +113,7 @@ class _ListPageState extends State<ListPage> {
   }
 
   getUsersPastTripsStreamSnapshots() async {
-    var data = await Firestore.instance.collection('doctor').getDocuments();
+    var data = await Firestore.instance.collection('firstaid').getDocuments();
     setState(() {
       _allResults = data.documents;
     });
@@ -121,7 +123,7 @@ class _ListPageState extends State<ListPage> {
 
   Future getPost() async {
     var firestore = await Firestore.instance;
-    QuerySnapshot query = await firestore.collection('doctor').getDocuments();
+    QuerySnapshot query = await firestore.collection('firstaid').getDocuments();
     return query.documents;
   }
 
@@ -150,11 +152,10 @@ class _ListPageState extends State<ListPage> {
               child: FutureBuilder(
                 future: _data,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: LoadingScreen(auth: Auth()),
-                    );
-                  } else {
+                  if(!snapshot.hasData) {
+                    return WaittingScreen();
+                  }
+                    else {
                     return Theme(
                       data: ThemeData(
                         highlightColor: Color(0XFF3A6F8D),
@@ -196,20 +197,12 @@ class _ListPageState extends State<ListPage> {
 }
 
 Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
-  final doctorData = doctor_data.fromSnapshot(document);
+  final FirstAiddata = FirstAid_data.fromSnapshot(document);
 
-  navigateToDetial(DocumentSnapshot documentSnapshot,String imagepath) {
+  navigateToDetial(DocumentSnapshot documentSnapshot) {
     print('Med Details');
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => MedDetails()));
-  }
-
-  pickUpImageForDoctor(){
-    if(doctorData.gender.toString().toLowerCase() == 'male'){
-      return 'assets/images/drMale.png';
-    }else{
-      return 'assets/images/drFemale.png';
-    }
+        MaterialPageRoute(builder: (context) => MedDetails(documentSnapshot)));
   }
 
   return Padding(
@@ -232,12 +225,12 @@ Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
           //child: new Image.network(trip.image),
           child: Image.asset(pickUpImageForDoctor(),fit: BoxFit.fill,),
         ),*/
-        title: Center(child: Text(doctorData.name,style: TextStyle(fontSize: 23.5,),)),
+        title: Center(child: Text(FirstAiddata.title,style: TextStyle(fontSize: 23.5,),)),
 /*        subtitle: Text('${doctorData.medicalspecialty} \n'
             'City: ${doctorData.city} \n'
             'Work Tome: Form : ${doctorData.workstart}',
           style: TextStyle(fontSize: 16.0),),*/
-        onTap: () => navigateToDetial(document,pickUpImageForDoctor()),
+        onTap: () => navigateToDetial(document),
       ),
     ),
   );

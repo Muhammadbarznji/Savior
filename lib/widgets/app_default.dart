@@ -4,7 +4,9 @@ import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
 import 'package:testapp/screens/doctors/doctor_screen.dart';
 import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/hospital/hospitals_screen.dart';
+import 'package:testapp/screens/hospital/nearby_hospital_screen.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
+import 'package:testapp/screens/medkit/firstaid.dart';
 import 'package:testapp/screens/profile/profile_screen.dart';
 
 final auth = FirebaseAuth.instance;
@@ -19,19 +21,19 @@ class AppDrawer extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return HomeScreen();
-                  }));
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                                return HomeScreen();
+                              }));
+                        },
+                        child: Container(
                           color: Color(0XFF3A6F8D),
                           child: DrawerHeader(
                             decoration: BoxDecoration(
@@ -63,124 +65,155 @@ class AppDrawer extends StatelessWidget {
                             ),
                           ),
                         ),
-                        ListButtons(
-                          onTap: () {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                              return HomeScreen();
-                            }));
-                          },
-                          icon: 'assets/images/home_icon.png',
-                          text: 'Home',
+                      ),
+                      ListButtons(
+                        onTap: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                                return HomeScreen();
+                              }));
+                        },
+                        icon: 'assets/images/home_icon.png',
+                        text: 'Hospitalise',
+                      ),
+                      ListButtons(
+                        onTap: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                                return ProfileScreen();
+                              }));
+                        },
+                        icon: 'assets/images/edit_profile_icon.png',
+                        text: 'Edit Profile',
+                      ),
+                      ListButtons(
+                        onTap: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                            return Doctor();
+                          }));
+                        },
+                        icon: 'assets/images/doctor_icon.png',
+                        text: 'Doctors',
+                      ),
+                      ListButtons(
+                        onTap: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                            return Hospital();
+                          }));
+                        },
+                        icon: 'assets/images/hospital_icon.png',
+                        text: 'Hospitalise',
+                      ),
+                      ListButtons(
+                        onTap: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                                return FirstAid();
+                              }));
+                        },
+                        icon: 'assets/images/medical_kit_icon.png',
+                        text: 'First Aid',
+                      ),
+                      ListButtons(
+                        onTap: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) {
+                                return NearbyHospitalScreen();
+                              }));
+                        },
+                        icon: 'assets/images/hospital_location_icon.png',
+                        text: 'Locate Nearby Hospital',
+                      ),
+                    ],
+                  ),
+
+                  Container(
+                    color: Color(0XFFC4EBF2),
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: ListButtons(
+                            onTap: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return RichAlertDialog(
+                                      alertTitle:
+                                          richTitle("Log-out from the App"),
+                                      alertSubtitle:
+                                          richSubtitle('Are you Sure '),
+                                      alertType: RichAlertType.WARNING,
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text("Yes",
+                                              style: TextStyle(
+                                                  color: Colors.blue)),
+                                          onPressed: () async {
+                                            await auth.signOut();
+                                            Navigator.pushNamed(
+                                                context, LoadingScreen.id);
+                                          },
+                                        ),
+                                        FlatButton(
+                                          child: Text("No",
+                                              style: TextStyle(
+                                                  color: Colors.red)),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            icon: 'assets/images/log-out.png',
+                            text: 'Sign Out',
+                          ),
+                        ),
+/*                        ListButtons(
+                          onTap: () {},
+                          icon: Icons.share,
+                          text: 'Share Companion ',
                         ),
                         ListButtons(
-                          onTap: () {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                              return Doctor();
-                            }));
-                          },
-                          icon: 'assets/images/doctor_icon.png',
-                          text: 'Doctors',
+                          onTap: () {},
+                          icon: Icons.help_outline,
+                          text: 'Help and Feedback',
+                        ),*/
+                        SizedBox(
+                          height: 5.0,
                         ),
-                        ListButtons(
-                          onTap: () {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                              return Hospital();
-                            }));
-                          },
-                          icon: 'assets/images/hospital_icon.png',
-                          text: 'Hospitalise',
+                        Material(
+                          borderRadius: BorderRadius.circular(500),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(500),
+                            splashColor: Colors.black45,
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: CircleAvatar(
+                              radius: 18.75,
+                              backgroundColor: Colors.black,
+                              child:
+                                  Icon(Icons.arrow_back, color: Colors.white),
+                            ),
+                          ),
+                        ),
+/*                        ListButtons(
+                          onTap: () {Navigator.of(context).pop();},
+                          icon: Icons.arrow_back,
+                          text: '',
+                        ),*/
+                        SizedBox(
+                          height: 15.0,
                         ),
                       ],
                     ),
-                    Container(
-                      color: Color(0XFFC4EBF2),
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(left: 8.0),
-                            child: ListButtons(
-                              onTap: () async {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return RichAlertDialog(
-                                        alertTitle:
-                                            richTitle("Log-out from the App"),
-                                        alertSubtitle:
-                                            richSubtitle('Are you Sure '),
-                                        alertType: RichAlertType.WARNING,
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            child: Text("Yes",
-                                                style: TextStyle(
-                                                    color: Colors.blue)),
-                                            onPressed: () async {
-                                              await auth.signOut();
-                                              Navigator.pushNamed(
-                                                  context, LoadingScreen.id);
-                                            },
-                                          ),
-                                          FlatButton(
-                                            child: Text("No",
-                                                style: TextStyle(
-                                                    color: Colors.red)),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    });
-                              },
-                              icon: 'assets/images/log-out.png',
-                              text: 'Sign Out',
-                            ),
-                          ),
-/*                        ListButtons(
-                            onTap: () {},
-                            icon: Icons.share,
-                            text: 'Share Companion ',
-                          ),
-                          ListButtons(
-                            onTap: () {},
-                            icon: Icons.help_outline,
-                            text: 'Help and Feedback',
-                          ),*/
-                          SizedBox(
-                            height: 5.0,
-                          ),
-                          Material(
-                            borderRadius: BorderRadius.circular(500),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(500),
-                              splashColor: Colors.black45,
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: CircleAvatar(
-                                radius: 18.75,
-                                backgroundColor: Colors.black,
-                                child:
-                                    Icon(Icons.arrow_back, color: Colors.white),
-                              ),
-                            ),
-                          ),
-/*                        ListButtons(
-                            onTap: () {Navigator.of(context).pop();},
-                            icon: Icons.arrow_back,
-                            text: '',
-                          ),*/
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
           ],
@@ -296,25 +329,31 @@ class TestAppAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            //after first aid
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                settitle,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2.8,
-                  fontSize: 28,
-                ),
+          title: Padding(
+            padding: const EdgeInsets.only(left: 48.0,),
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                //after first aid
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    settitle,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.8,
+                      fontSize: 30.0,
+                    ),
+                  ),
+                  Image.asset(
+                    'assets/images/logo.png',
+                    height: 70.0,
+                  ),
+                ],
               ),
-              Image.asset(
-                'assets/images/logo.png',
-                height: 70.0,
-              ),
-            ],
+            ),
           ),
           centerTitle: true,
           elevation: 0.0,

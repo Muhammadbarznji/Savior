@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:testapp/others/auth.dart';
 import 'package:testapp/screens/home/admin.dart';
 import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/loading/nointernet_screen.dart';
+import 'package:testapp/screens/loading/waiting_screen.dart';
 import 'package:testapp/screens/login/login_screen.dart';
 import 'dart:async';
 import 'package:connectivity/connectivity.dart';
@@ -85,11 +87,20 @@ class _LoadingScreenState extends State<LoadingScreen> {
                     auth: widget.auth,
                   );
                 } else {
-                  if(user.uid == 'Uf2orSFtLEQkwTueh1YQ1wbZpbX2') {
-                    return Admin();
-                  }else{
-                    return HomeScreen();
-                  }
+                    return new StreamBuilder(
+                        stream: Firestore.instance.collection('profile').document(user.uid).snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return WaittingScreen();
+                          }
+                          var userDocument = snapshot.data;
+                          if(userDocument['role']) {
+                            return Admin();
+                          }else{
+                            return HomeScreen();
+                          }
+                        }
+                    );
                 }
               } else {
                 return Scaffold(
@@ -130,7 +141,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                       Expanded(
                         flex: 1,
                         child: SpinKitFadingCube(
-                          color: Colors.greenAccent,
+                          color: Color(0XFF59C38F),
                           size: 50.0,
                         ),
                       )

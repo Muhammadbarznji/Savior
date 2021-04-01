@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:testapp/screens/doctors/doctor_screen.dart';
+import 'package:testapp/screens/emergencysituation/emergency.dart';
 import 'package:testapp/screens/home/admin.dart';
 import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/hospital/hospitals_screen.dart';
+import 'package:testapp/screens/hospital/nearby_hospital_screen.dart';
 import 'package:testapp/screens/loading/nointernet_screen.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/screens/loading/onBoarding_screen.dart';
@@ -42,8 +44,9 @@ class TestApp extends StatelessWidget {
         Hospital.id: (context) => Hospital(),
         Doctor.id: (context) => Doctor(),
         FirstAid.id: (context) => FirstAid(),
-        MedDetails.id: (context) => MedDetails(),
+        NearbyHospitalScreen.id: (context) => NearbyHospitalScreen(),
         NoInternetConnection.id: (context) => NoInternetConnection(),
+        EmergencySituation.id: (context) => EmergencySituation(),
         OnBoardingScreen.id: (context) => OnBoardingScreen(),
       },
       theme: ThemeData(

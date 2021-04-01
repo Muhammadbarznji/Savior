@@ -10,6 +10,7 @@ import 'package:testapp/screens/home/home_screen.dart';
 
 import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/screens/loading/onBoarding_screen.dart';
+import 'package:testapp/screens/loading/waiting_screen.dart';
 
 import 'email_auth.dart';
 
@@ -58,9 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? LoadingScreen(
-            auth: Auth(),
-          )
+        ? WaittingScreen()
         : Scaffold(
             resizeToAvoidBottomPadding: false,
             body: SafeArea(
@@ -213,13 +212,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   try {
                                     await loginUser();
                                   } catch (e) {}
-                              setState(() {
-                                passwordController.clear();
-                                loading = false;
-                                error =
-                                'could not sign in with those credentials';
-                              })
-                                  ;
+                                  setState(() {
+                                    passwordController.clear();
+                                    loading = false;
+                                    error =
+                                        'could not sign in with those credentials';
+                                  });
                                 }
                               },
                             ),
@@ -320,11 +318,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
                   else
                     {
-                      if (userRole == false)
-                        {
-                          Navigator.pushReplacementNamed(
-                              context, HomeScreen.id),
-                        }
+                      Navigator.pushReplacementNamed(context, HomeScreen.id),
                     }
                 });
       } else {

@@ -4,6 +4,7 @@ import 'package:testapp/models/doctor_data.dart';
 import 'package:testapp/others/auth.dart';
 import 'package:testapp/screens/doctors/doctor_detial.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
+import 'package:testapp/screens/loading/waiting_screen.dart';
 
 
 class ListOfDoctorInHospital extends StatefulWidget {
@@ -123,10 +124,8 @@ class _ListOfDoctorInHospitalState extends State<ListOfDoctorInHospital> {
             child: FutureBuilder(
               future: _data,
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: LoadingScreen(auth: Auth()),
-                  );
+                if (!snapshot.hasData) {
+                  return WaittingScreen();
                 } else {
                   return Theme(
                     data: ThemeData(

@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:testapp/models/doctor_data.dart';
 import 'package:testapp/others/auth.dart';
+import 'package:testapp/others/constants.dart';
 import 'package:testapp/screens/doctors/doctor_detial.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
+import 'package:testapp/screens/loading/waiting_screen.dart';
 import 'package:testapp/widgets/app_default.dart';
-import 'package:testapp/widgets/constant.dart';
+
 
 
 class Doctor extends StatefulWidget {
@@ -177,11 +180,14 @@ class _ListPageState extends State<ListPage> {
               child: FutureBuilder(
                 future: _data,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+/*                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
                       child: LoadingScreen(auth: Auth()),
                     );
-                  } else {
+                  }*/
+                  if (!snapshot.hasData) {
+                    return WaittingScreen();
+                  }else {
                     return Theme(
                       data: ThemeData(
                         highlightColor: Color(0XFF3A6F8D),
