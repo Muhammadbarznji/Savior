@@ -7,6 +7,7 @@ import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/screens/loading/waiting_screen.dart';
 import 'package:testapp/widgets/app_default.dart';
 import 'hospital_detail.dart';
+import 'nearby_hospital_screen.dart';
 
 class Hospital extends StatefulWidget {
   static const String id = 'Hospital';
@@ -161,10 +162,11 @@ class _ListPageState extends State<ListPage> {
                     letterSpacing: 1.5),
               ),
             ),
+
             Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10.0),
-                 // const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 15.0),
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+              // const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 15.0),
               child: TextField(
                 controller: _searchController,
                 decoration: textInputDecoration.copyWith(
@@ -177,14 +179,34 @@ class _ListPageState extends State<ListPage> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
+              child: FlatButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, NearbyHospitalScreen.id);
+                },
+                child: FittedBox(
+                  child: Row(children: [
+                    Text(
+                      'Locate Nearby Hospital',
+                      style: TextStyle(color: Colors.white, fontSize: 25.0),
+                    ),
+                    Image.asset('assets/images/hospital_location.png',scale: 5,),
+                  ],),
+                ),
+
+                color: Color(0XFF59C38F),
+                minWidth: 360.0,
+                height: 50.0,
+              ),
+            ),
             Expanded(
               child: FutureBuilder(
                 future: _data,
                 builder: (context, snapshot) {
-                  if(!snapshot.hasData){
+                  if (!snapshot.hasData) {
                     return WaittingScreen();
-                  }
-                  else {
+                  } else {
                     return Theme(
                       data: ThemeData(
                         highlightColor: Color(0XFF3A6F8D),

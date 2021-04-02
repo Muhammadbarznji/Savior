@@ -33,4 +33,5 @@ class UserProfile {
     this.role = data['role'];
     return this;
   }
+
 }

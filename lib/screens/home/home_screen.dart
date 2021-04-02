@@ -256,7 +256,29 @@ class _ListHomeButtonState extends State<ListHomeButton> {
                     ],
                   ),
                 ),
+
                 Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      InkWell(
+                        child: CardButton(
+                          height: screenHeight * 0.2,
+                          width: screenWidth * (35 / 100),
+                          imagepath: Image.asset('assets/images/emergency-call.png'),
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, EmergencySituation.id);
+                        },
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.7),
+                        child: homeScreenTextStyle('EMG'),
+                      ),
+                    ],
+                  ),
+                ),
+
+/*                Expanded(
                   child: Column(
                     children: <Widget>[
                       InkWell(
@@ -280,38 +302,7 @@ class _ListHomeButtonState extends State<ListHomeButton> {
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
-
-            //Space between row
-            SizedBox(
-              height: screenHeight * 0.03,
-            ),
-
-            //third row
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      InkWell(
-                        child: CardButton(
-                          height: screenHeight * 0.2,
-                          width: screenWidth * (35 / 100),
-                          imagepath: Image.asset('assets/images/emergency-call.png'),
-                        ),
-                        onTap: () {
-                          Navigator.pushNamed(context, EmergencySituation.id);
-                        },
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 8.7),
-                        child: homeScreenTextStyle('EMG'),
-                      ),
-                    ],
-                  ),
-                ),
+                ),*/
               ],
             ),
           ],
