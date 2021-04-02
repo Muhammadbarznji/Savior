@@ -191,7 +191,7 @@ class _ListPageState extends State<ListPage> {
                       'Locate Nearby Hospital',
                       style: TextStyle(color: Colors.white, fontSize: 25.0),
                     ),
-                    Image.asset('assets/images/hospital_location.png',scale: 5,),
+                    Image.asset('assets/images/hospital_location.png',scale: 6,),
                   ],),
                 ),
 

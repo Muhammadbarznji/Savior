@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -47,7 +48,7 @@ class EmergencySituationState extends State<EmergencySituation> {
       backgroundColor: Colors.transparent,
       drawer: AppDrawer(),
       appBar: TestAppAppBar(
-        settitle: 'EMC',
+        settitle: 'Emergency',
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -70,12 +71,11 @@ class HospitalList extends StatefulWidget {
 class _HospitalListState extends State<HospitalList> {
   bool showSpinner = true;
   HospitalData hospitalData;
-  double lat, tempLon;
-  String locationUrl;
-  SickLocation elderLocation;
-  String messageText = '', username = 'user', userId;
+  SickLocation sickLocation;
+  String messageText = '', username = '', userId;
   bool relativesFound = false;
   UserProfile userProfile;
+  FirebaseUser user;
 
   List<String> recipients;
 
@@ -83,18 +83,39 @@ class _HospitalListState extends State<HospitalList> {
     await FirebaseAuth.instance.currentUser().then((user) {
       setState(() {
         userId = user.uid;
+        print(userId);
+      });
+    });
+  }
+
+  Future<void> _getUserName() async {
+    Firestore.instance
+        .collection('profile')
+        .document((await FirebaseAuth.instance.currentUser()).uid)
+        .get()
+        .then((value) {
+      setState(() {
+        username = value.data['userName'].toString();
       });
     });
   }
 
   getLocationDetails() async {
-    await elderLocation.getLocationData();
+    await sickLocation.getLocationData();
     messageText =
-        'Hey , This is $username find me at ${elderLocation.address} .\n Link to my location : ${elderLocation.url}';
-    return elderLocation;
+        'Hey , This is $username, find me at ${sickLocation.address} .\n Link to my location : ${sickLocation.url}';
+    return sickLocation;
   }
 
-  _sendSMS(String message, List<String> recipients) async {
+  void _sendSMS(String message, List<String> recipents) async {
+    String _result = await sendSMS(message: message, recipients: recipents)
+        .catchError((onError) {
+      print(onError);
+    });
+    print(_result);
+  }
+
+/*  _sendSMS(String message, List<String> recipients) async {
     List<String> recipients = ["9647503275785"];
     String _result = await sendSMS(
             message: "https://testdynamiclink.page.link/Zi7X",
@@ -104,23 +125,23 @@ class _HospitalListState extends State<HospitalList> {
     });
     print(_result);
 
-/*    String _result = await sendSMS(message: message, recipients: recipients)
+*//*    String _result = await sendSMS(message: message, recipients: recipients)
         .catchError((onError) {
       print(onError);
     });
 
-    print(_result);*/
-  }
+    print(_result);*//*
+  }*/
 
   @override
   initState() {
     super.initState();
     hospitalData = HospitalData();
     hospitalData.getNearbyHospital();
-    super.initState();
     getCurrentUser();
+    _getUserName();
     userProfile = UserProfile(userId);
-    elderLocation = SickLocation();
+    sickLocation = SickLocation();
     recipients = List<String>();
     getLocationDetails();
   }
@@ -172,6 +193,7 @@ class _HospitalListState extends State<HospitalList> {
                               regPhoneNumber
                                   .hasMatch(r.phoneNumber)
                                   .toString());
+                          relativesFound = true;
                           break;
                         } else {
                           phoneNumberResult = 'not found';
@@ -200,8 +222,9 @@ class _HospitalListState extends State<HospitalList> {
                                     FlatButton(
                                       child: Text("Yes"),
                                       onPressed: () async {
-                                        Navigator.pop(context);
-                                        if (relativesFound) {
+                                        if(relativesFound) {
+                                          Navigator.pop(context);
+                                          print('hello from sms');
                                           _sendSMS(messageText, recipients);
                                           print(messageText);
                                         }
