@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:testapp/models/doctor_data.dart';
-import 'package:testapp/others/auth.dart';
 import 'package:testapp/screens/doctors/doctor_detial.dart';
-import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/screens/loading/waiting_screen.dart';
 
 

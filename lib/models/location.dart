@@ -2,7 +2,9 @@ import 'package:geolocator/geolocator.dart';
 
 class UserLocation {
   double latitude, longitude;
+
   UserLocation({this.latitude, this.longitude});
+
   Future<UserLocation> getLocation() async {
     UserLocation userLocation = UserLocation();
     try {

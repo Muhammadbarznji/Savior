@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:location/location.dart' as LocationManager;
 import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
@@ -8,7 +9,6 @@ import 'package:testapp/models/Sick_location.dart';
 import 'package:testapp/models/hospital.dart';
 import 'package:testapp/models/user.dart';
 import 'package:testapp/widgets/app_default.dart';
-import 'package:flutter_sms/flutter_sms.dart';
 
 LocationManager.Location location = LocationManager.Location();
 
@@ -125,12 +125,12 @@ class _HospitalListState extends State<HospitalList> {
     });
     print(_result);
 
-*//*    String _result = await sendSMS(message: message, recipients: recipients)
+*/ /*    String _result = await sendSMS(message: message, recipients: recipients)
         .catchError((onError) {
       print(onError);
     });
 
-    print(_result);*//*
+    print(_result);*/ /*
   }*/
 
   @override
@@ -208,75 +208,106 @@ class _HospitalListState extends State<HospitalList> {
                         style: TextStyle(fontSize: 25.0),
                       ),
                     );*/
-                    return Center(
-                      child: GestureDetector(
-                        onTap: () async {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return RichAlertDialog(
-                                  alertTitle: richTitle("Alert Relatives"),
-                                  alertSubtitle: richSubtitle('Are you Sure '),
-                                  alertType: RichAlertType.INFO,
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: Text("Yes"),
-                                      onPressed: () async {
-                                        if(relativesFound) {
+                    if (relativesFound) {
+                      return Center(
+                        child: GestureDetector(
+                          onTap: () async {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return RichAlertDialog(
+                                    alertTitle: richTitle("Alert Relatives"),
+                                    alertSubtitle:
+                                        richSubtitle('Are you Sure '),
+                                    alertType: RichAlertType.INFO,
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text("Yes"),
+                                        onPressed: () async {
+                                          if (relativesFound) {
+                                            Navigator.pop(context);
+                                            print('hello from sms');
+                                            _sendSMS(messageText, recipients);
+                                            print(messageText);
+                                          }
+                                        },
+                                      ),
+                                      FlatButton(
+                                        child: Text("No"),
+                                        onPressed: () {
                                           Navigator.pop(context);
-                                          print('hello from sms');
-                                          _sendSMS(messageText, recipients);
-                                          print(messageText);
-                                        }
-                                      },
-                                    ),
-                                    FlatButton(
-                                      child: Text("No"),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                hospitalName + '\n\n' + phoneNumberResult,
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 30.0,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 55.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Colors.redAccent,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.red,
+                                      blurRadius: 3.0,
+                                      offset: Offset(0, 4.0),
                                     ),
                                   ],
-                                );
-                              });
-                        },
+                                ),
+                                child: Text(
+                                  'Contact Relatives',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20.0),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              hospitalName + '\n\n' + phoneNumberResult,
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            Image.asset(
+                              'assets/images/notfound_icon.png',
+                              scale: 3.0,
                             ),
+                            Text('Sorry can not find any Hospital'),
+                            Text('please try again'),
                             SizedBox(
-                              height: 30.0,
+                              height: 10.0,
                             ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 55.0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Colors.redAccent,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.red,
-                                    blurRadius: 3.0,
-                                    offset: Offset(0, 4.0),
-                                  ),
-                                ],
-                              ),
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(
+                                    context, EmergencySituation.id);
+                              },
                               child: Text(
-                                'Contact Relatives',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20.0),
+                                'Refresh',
+                                style: TextStyle(color: Colors.white),
                               ),
+                              color: Color(0XFF59C38F),
                             ),
                           ],
                         ),
-                      ),
-                    );
+                      );
+                    }
                   }
                 },
               ),

@@ -6,7 +6,9 @@ import 'location.dart';
 class SickLocation {
   String address, url;
   UserLocation location;
+
   SickLocation();
+
   getLocationData() async {
     location = UserLocation(longitude: 0, latitude: 0);
     await location.getLocation().then((value) {

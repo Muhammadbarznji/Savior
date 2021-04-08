@@ -1,11 +1,14 @@
 import 'package:testapp/others/constants.dart';
 import 'package:testapp/others/network.dart';
+
 import 'location.dart';
 
 class HospitalData {
   UserLocation userLocation;
   List<Hospital> hospitalList;
+
   HospitalData();
+
   getNearbyHospital() async {
     this.hospitalList = List<Hospital>();
     userLocation = UserLocation();
@@ -23,7 +26,7 @@ class HospitalData {
       }
     }*/
     url =
-    'https://api.tomtom.com/search/2/nearbySearch/.JSON?key=$kTomsApiKey&lat=36.2014791&lon=44.0576414&radius=$radius&limit=10&categorySet=7321';
+        'https://api.tomtom.com/search/2/nearbySearch/.JSON?key=$kTomsApiKey&lat=36.2014791&lon=44.0576414&radius=$radius&limit=10&categorySet=7321';
 
     //print('information about location: '+url);
     NetworkHelper networkHelper = NetworkHelper(url);
@@ -51,8 +54,14 @@ class HospitalData {
       double hospitalDistance =
           distanceData['routes'][0]['summary']['lengthInMeters'] / 1000;
 
-      Hospital hospital = Hospital(h['poi']['name'], h['position']['lat'],
-          h['position']['lon'],h['poi']['phone'], locationUrl, placeName, hospitalDistance);
+      Hospital hospital = Hospital(
+          h['poi']['name'],
+          h['position']['lat'],
+          h['position']['lon'],
+          h['poi']['phone'],
+          locationUrl,
+          placeName,
+          hospitalDistance);
 
       try {
         this.hospitalList.add(hospital);
@@ -65,10 +74,10 @@ class HospitalData {
 }
 
 class Hospital {
-  String hospitalName, hospitalLocationUrl, hospitalPlace,phoneNumber;
+  String hospitalName, hospitalLocationUrl, hospitalPlace, phoneNumber;
   double hospitalLocationLatitude, hospitalLocationLongitude, hospitalDistance;
 
   Hospital(this.hospitalName, this.hospitalLocationLatitude,
-      this.hospitalLocationLongitude,this.phoneNumber,
+      this.hospitalLocationLongitude, this.phoneNumber,
       [this.hospitalLocationUrl, this.hospitalPlace, this.hospitalDistance]);
 }

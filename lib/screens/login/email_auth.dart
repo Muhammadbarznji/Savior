@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/loading/onBoarding_screen.dart';
 
 class EmailRegister extends StatefulWidget {
@@ -11,13 +10,13 @@ class EmailRegister extends StatefulWidget {
 }
 
 class _EmailRegisterState extends State<EmailRegister> {
+  RegExp regPhoneNumber;
   TextEditingController passwordController,
       emailController,
       userNameController,
+      phoneNumberController,
       confirmPasswordController;
   FirebaseAuth _auth = FirebaseAuth.instance;
-
-
 
   SharedPreferences prefs;
   bool showOnBoarding = false;
@@ -29,46 +28,62 @@ class _EmailRegisterState extends State<EmailRegister> {
 
   bool showError = false;
   final _registerFormKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     initPrefs();
     passwordController = TextEditingController();
     emailController = TextEditingController();
     userNameController = TextEditingController();
+    phoneNumberController = TextEditingController();
     confirmPasswordController = TextEditingController();
+
+    regPhoneNumber = RegExp(
+        r"\s*(?:(\d{1,3}))?[-. (]*(\d{3,4})[-. )]*(\d{3})[-. ]*(\d{6})(?: *x(\d+))?\s*$");
+
     super.initState();
+  }
+
+  Future test() async{
+
   }
 
   Future addUser() async {
     await _auth
         .createUserWithEmailAndPassword(
-        email: emailController.text, password: passwordController.text)
-        .then((user) async {
+            email: emailController.text, password: passwordController.text)
+        .then((_) async {
       try {
         await Firestore.instance
             .collection('profile')
-            .document(user.user.uid.toString())
+            .document(_.user.uid.toString())
             .setData({
           'userName': userNameController.text,
           'email': emailController.text,
-          'phoneNumber': ' ',
-          'uid': user.user.uid,
-          'picture':'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png',
+          'phoneNumber': phoneNumberController.text,
+          'uid': _.user.uid,
+          'picture':
+              'https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png',
           'weight': '',
           'height': '',
           'bloodPressure': 'Normal',
           'bloodSugar': 'Normal',
           'allergies': 'None',
-          'bloodGroup': 'Not Set',
+          'bloodGroup': 'Not say',
           'age': '25',
-          'gender': 'Not Set',
+          'gender': 'Not say',
           'role': false,
         });
         prefs.setBool('first', true);
-        Navigator.pushReplacement(context,
+/*        Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) {
-              return OnBoardingScreen();
-            }));
+              return VerifyScreen(user: _.user,);
+            }));*/
+
+                Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) {
+          return OnBoardingScreen();
+        }));
       } catch (e) {
         print(e.toString());
       }
@@ -97,7 +112,7 @@ class _EmailRegisterState extends State<EmailRegister> {
                       Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text(
-                          'Register to Test APP',
+                          'Register to Saver',
                           style: TextStyle(fontSize: 25),
                         ),
                       ),
@@ -110,7 +125,7 @@ class _EmailRegisterState extends State<EmailRegister> {
                           decoration: InputDecoration(
                             hintText: 'Enter user name',
                             prefixIcon:
-                            Icon(Icons.person, color: Colors.indigo),
+                                Icon(Icons.person, color: Colors.indigo),
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.blue,
@@ -137,6 +152,49 @@ class _EmailRegisterState extends State<EmailRegister> {
                             }
                             if (value.length < 5) {
                               return 'User Name too small';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(8),
+                        child: TextFormField(
+                          controller: phoneNumberController,
+                          style: TextStyle(),
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hintText: 'Enter phone number',
+                            prefixIcon: Icon(Icons.phone, color: Colors.indigo),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    style: BorderStyle.solid)),
+                            errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.red,
+                                    style: BorderStyle.solid)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.indigo,
+                                    style: BorderStyle.solid)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    style: BorderStyle.solid)),
+                          ),
+                          onChanged: (v) {
+                            _registerFormKey.currentState.validate();
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter phone number';
+                            }
+                            if (value.length < 11) {
+                              return 'Phone number too small';
+                            }
+                            if (regPhoneNumber.hasMatch(value.toString())) {
+                              return 'Please enter validate phone number';
                             }
                             return null;
                           },

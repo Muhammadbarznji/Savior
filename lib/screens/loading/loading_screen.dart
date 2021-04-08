@@ -1,5 +1,10 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:testapp/others/auth.dart';
 import 'package:testapp/screens/home/admin.dart';
@@ -7,10 +12,6 @@ import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/loading/nointernet_screen.dart';
 import 'package:testapp/screens/loading/waiting_screen.dart';
 import 'package:testapp/screens/login/login_screen.dart';
-import 'dart:async';
-import 'package:connectivity/connectivity.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 
 class LoadingScreen extends StatefulWidget {
   static const String id = 'Loading_Screen';

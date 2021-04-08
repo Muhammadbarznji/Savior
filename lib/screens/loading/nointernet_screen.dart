@@ -15,7 +15,7 @@ class NoInternetConnection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/images/no-wifi.png',
+                'assets/images/noWifi.jpg',
                 scale: 1.8,
               ),
               SizedBox(

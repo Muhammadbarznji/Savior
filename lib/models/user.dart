@@ -1,4 +1,3 @@
-
 class UserProfile {
   String allergies,
       userName,
@@ -14,6 +13,7 @@ class UserProfile {
       picture,
       uid;
   bool role;
+
   UserProfile(this.uid);
 
   setData(Map<String, dynamic> data) {
@@ -33,5 +33,4 @@ class UserProfile {
     this.role = data['role'];
     return this;
   }
-
 }

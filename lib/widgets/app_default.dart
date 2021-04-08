@@ -1,17 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
+import 'package:testapp/models/user.dart';
+import 'package:testapp/screens/about/aboutUs.dart';
 import 'package:testapp/screens/doctors/doctor_screen.dart';
+import 'package:testapp/screens/home/admin.dart';
 import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/hospital/hospitals_screen.dart';
-import 'package:testapp/screens/hospital/nearby_hospital_screen.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
+import 'package:testapp/screens/loading/waiting_screen.dart';
 import 'package:testapp/screens/medkit/firstaid.dart';
 import 'package:testapp/screens/profile/profile_screen.dart';
 
 final auth = FirebaseAuth.instance;
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
+  @override
+  _AppDrawerState createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
+  String userId;
+  UserProfile userProfile;
+
+  @override
+  void initState() {
+    getCurrentUser();
+    userProfile = UserProfile(userId);
+    super.initState();
+  }
+
+  getCurrentUser() async {
+    await FirebaseAuth.instance.currentUser().then((user) {
+      setState(() {
+        userId = user.uid;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,8 +57,21 @@ class AppDrawer extends StatelessWidget {
                         onTap: () {
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                                return HomeScreen();
-                              }));
+                                return new StreamBuilder(
+                                    stream: Firestore.instance.collection('profile').document(userId).snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return WaittingScreen();
+                                      }
+                                      var userDocument = snapshot.data;
+                                      if(userDocument['role']) {
+                                        return Admin();
+                                      }else{
+                                        return HomeScreen();
+                                      }
+                                    }
+                                );
+                          }));
                         },
                         child: Container(
                           color: Color(0XFF3A6F8D),
@@ -58,6 +98,7 @@ class AppDrawer extends StatelessWidget {
                                       fontWeight: FontWeight.w100,
                                       fontSize: 52.0,
                                       letterSpacing: 2.0,
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ],
@@ -70,18 +111,18 @@ class AppDrawer extends StatelessWidget {
                         onTap: () {
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                                return HomeScreen();
-                              }));
+                            return HomeScreen();
+                          }));
                         },
                         icon: 'assets/images/home_icon.png',
-                        text: 'Hospitalise',
+                        text: 'Home',
                       ),
                       ListButtons(
                         onTap: () {
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                                return ProfileScreen();
-                              }));
+                            return ProfileScreen();
+                          }));
                         },
                         icon: 'assets/images/edit_profile_icon.png',
                         text: 'Edit Profile',
@@ -110,8 +151,8 @@ class AppDrawer extends StatelessWidget {
                         onTap: () {
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                                return FirstAid();
-                              }));
+                            return FirstAid();
+                          }));
                         },
                         icon: 'assets/images/medical_kit_icon.png',
                         text: 'First Aid',
@@ -120,15 +161,14 @@ class AppDrawer extends StatelessWidget {
                         onTap: () {
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                                return NearbyHospitalScreen();
+                                return AboutUs();
                               }));
                         },
-                        icon: 'assets/images/hospital_location_icon.png',
-                        text: 'Locate Nearby Hospital',
+                        icon: 'assets/images/aboutus.png',
+                        text: 'About Us'
                       ),
                     ],
                   ),
-
                   Container(
                     color: Color(0XFFC4EBF2),
                     child: Column(
@@ -159,8 +199,8 @@ class AppDrawer extends StatelessWidget {
                                         ),
                                         FlatButton(
                                           child: Text("No",
-                                              style: TextStyle(
-                                                  color: Colors.red)),
+                                              style:
+                                                  TextStyle(color: Colors.red)),
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
@@ -173,16 +213,6 @@ class AppDrawer extends StatelessWidget {
                             text: 'Sign Out',
                           ),
                         ),
-/*                        ListButtons(
-                          onTap: () {},
-                          icon: Icons.share,
-                          text: 'Share Companion ',
-                        ),
-                        ListButtons(
-                          onTap: () {},
-                          icon: Icons.help_outline,
-                          text: 'Help and Feedback',
-                        ),*/
                         SizedBox(
                           height: 5.0,
                         ),
@@ -330,7 +360,9 @@ class TestAppAppBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
           title: Padding(
-            padding: const EdgeInsets.only(left: 48.0,),
+            padding: const EdgeInsets.only(
+              left: 48.0,
+            ),
             child: FittedBox(
               fit: BoxFit.fill,
               child: Row(
@@ -386,4 +418,23 @@ class TestAppAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(height);
+}
+
+class BackBtn extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(
+          0, MediaQuery.of(context).size.height * 0.1, 0, 0),
+      child: FlatButton(
+          shape: CircleBorder(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            size: MediaQuery.of(context).size.height * 0.045,
+          )),
+    );
+  }
 }

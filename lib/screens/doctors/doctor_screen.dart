@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:testapp/models/doctor_data.dart';
-import 'package:testapp/others/auth.dart';
+import 'package:testapp/models/user.dart';
 import 'package:testapp/others/constants.dart';
 import 'package:testapp/screens/doctors/doctor_detial.dart';
-import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/screens/loading/waiting_screen.dart';
 import 'package:testapp/widgets/app_default.dart';
 
-
+import 'add_new_doctor_screen.dart';
 
 class Doctor extends StatefulWidget {
   static const String id = 'Doctor';
@@ -19,24 +18,73 @@ class Doctor extends StatefulWidget {
 }
 
 class _DoctorState extends State<Doctor> {
+
+  String userId;
+  UserProfile userProfile;
+
+  @override
+  void initState() {
+    getCurrentUser();
+    userProfile = UserProfile(userId);
+    super.initState();
+  }
+
+  getCurrentUser() async {
+    await FirebaseAuth.instance.currentUser().then((user) {
+      setState(() {
+        userId = user.uid;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Padding(
+       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 40.0),
-        child: FloatingActionButton(
-          onPressed: (){
-            Navigator.pop(context);
-          },
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          child: Icon(
-            Icons.arrow_back,
-            color: Color(0XFF3A6F8D),
-            size: 28.0,
-          ),
-        ),
+        child:                     new StreamBuilder(
+       stream: Firestore.instance.collection('profile').document(userId).snapshots(),
+        // ignore: missing_return
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return WaittingScreen();
+          }
+          var userDocument = snapshot.data;
+          if(userDocument['role']) {
+            return FloatingActionButton(
+              onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) {
+                  return AddNewDoctor();
+                }));
+              },
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              child: Icon(
+                Icons.person_add_alt_1,
+                color: Colors.red,
+                size: 50.0,
+              ),
+            );
+          }else{
+            return FloatingActionButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              child: Icon(
+                Icons.arrow_back,
+                color: Color(0XFF3A6F8D),
+                size: 28.0,
+              ),
+            );
+          }
+        }
+    ),
+
       ),
+
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
@@ -163,7 +211,7 @@ class _ListPageState extends State<ListPage> {
             ),
             Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10.0),
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
               child: TextField(
                 controller: _searchController,
                 decoration: textInputDecoration.copyWith(
@@ -187,7 +235,7 @@ class _ListPageState extends State<ListPage> {
                   }*/
                   if (!snapshot.hasData) {
                     return WaittingScreen();
-                  }else {
+                  } else {
                     return Theme(
                       data: ThemeData(
                         highlightColor: Color(0XFF3A6F8D),
@@ -231,15 +279,22 @@ class _ListPageState extends State<ListPage> {
 Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
   final doctorData = doctor_data.fromSnapshot(document);
 
-  navigateToDetial(DocumentSnapshot documentSnapshot,String imagepath) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => doctorID(post: documentSnapshot,imagePath: imagepath,)));
+  navigateToDetial(DocumentSnapshot documentSnapshot, String imagepath) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => doctorID(
+                  post: documentSnapshot,
+                  imagePath: imagepath,
+                )));
   }
 
-  pickUpImageForDoctor(){
-    if(doctorData.gender.toString().toLowerCase() == 'male'){
+  pickUpImageForDoctor() {
+    if (doctorData.gender.toString().toLowerCase() == 'male') {
       return 'assets/images/drMale.png';
-    }else{
+    } else if (doctorData.gender.toString().toLowerCase() == 'female') {
+      return 'assets/images/drFemale.png';
+    } else {
       return 'assets/images/drFemale.png';
     }
   }
@@ -257,14 +312,22 @@ Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
             maxHeight: 120.0,
           ),
           //child: new Image.network(trip.image),
-          child: Image.asset(pickUpImageForDoctor(),fit: BoxFit.fill,),
+          child: Image.asset(
+            pickUpImageForDoctor(),
+            fit: BoxFit.fill,
+          ),
         ),
-        title: Text(doctorData.name,style: TextStyle(fontSize: 20.0),),
-        subtitle: Text('${doctorData.medicalspecialty} \n'
-            'City: ${doctorData.city} \n'
-            'Work Tome: Form : ${doctorData.workstart}',
-          style: TextStyle(fontSize: 16.0),),
-        onTap: () => navigateToDetial(document,pickUpImageForDoctor()),
+        title: Text(
+          doctorData.name,
+          style: TextStyle(fontSize: 20.0),
+        ),
+        subtitle: Text(
+          '${doctorData.medicalspecialty} \n'
+          'City: ${doctorData.city} \n'
+          'Work Tome: Form : ${doctorData.workstart}',
+          style: TextStyle(fontSize: 16.0),
+        ),
+        onTap: () => navigateToDetial(document, pickUpImageForDoctor()),
       ),
     ),
   );

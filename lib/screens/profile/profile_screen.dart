@@ -7,13 +7,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
 import 'package:testapp/models/user.dart';
+import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/widgets/app_default.dart';
 
 import 'ProfileTextBox.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const String id = 'Profile_Screen';
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -22,12 +25,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String userId, imageUrl = '';
   FirebaseUser loggedInUser;
   File imageFile;
+
+  final List<String> genderList = ['Male', 'Female', 'Not say'];
+  final List<String> bloodGroupList = [
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'AB+',
+    'AB-',
+    'O+',
+    'O-',
+    'Not say'
+  ];
+
   @override
   void initState() {
     getCurrentUser();
     super.initState();
   }
-
 
   getCurrentUser() async {
     await FirebaseAuth.instance.currentUser().then((user) {
@@ -64,7 +80,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           elevation: 1.2,
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 5.0,),
+              padding: const EdgeInsets.only(
+                right: 5.0,
+              ),
               child: GestureDetector(
                 onTap: () {},
                 child: CircleAvatar(
@@ -102,13 +120,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: 170,
                               decoration: BoxDecoration(
                                   border:
-                                  Border.all(width: 5, color: Colors.white),
+                                      Border.all(width: 5, color: Colors.white),
                                   borderRadius: BorderRadius.circular(2000),
                                   shape: BoxShape.rectangle,
                                   image: DecorationImage(
                                       fit: BoxFit.fill,
                                       image:
-                                      NetworkImage(userProfile.picture)))),
+                                          NetworkImage(userProfile.picture)))),
                           Positioned(
                             bottom: 0,
                             right: 0,
@@ -143,10 +161,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       value: userProfile.age,
                       title: 'age',
                     ),
-                    ProfileTextBox(
+/*                    ProfileTextBox(
                       name: 'gender',
                       value: userProfile.gender,
                       title: 'gender',
+                    ),*/
+                    Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: DropdownButtonFormField(
+                          value: userProfile.gender,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(20),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xffeeeff1)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            labelStyle: TextStyle(
+                                color: Colors.blue.shade700,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22),
+                            labelText: 'Gender',
+                          ),
+                          items: genderList.map((gender) {
+                            return DropdownMenuItem(
+                              value: gender,
+                              child: Text('$gender'),
+                            );
+                          }).toList(),
+                          onChanged: (value) async {
+                            await Firestore.instance
+                                .collection('profile')
+                                .document(userId)
+                                .updateData({'gender': value});
+                          },
+                        ),
+                      ),
                     ),
                     ProfileTextBox(
                       name: 'height',
@@ -158,10 +217,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       value: userProfile.weight + ' Kg',
                       title: 'weight',
                     ),
-                    ProfileTextBox(
-                      name: 'bloodGroup',
-                      value: userProfile.bloodGroup,
-                      title: 'blood group',
+                    Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: DropdownButtonFormField(
+                          value: userProfile.bloodGroup,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(20),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Color(0xffeeeff1)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            labelStyle: TextStyle(
+                                color: Colors.blue.shade700,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22),
+                            labelText: 'Blood Group',
+                          ),
+                          items: bloodGroupList.map((blood) {
+                            return DropdownMenuItem(
+                              value: blood,
+                              child: Text('$blood'),
+                            );
+                          }).toList(),
+                          onChanged: (value) async {
+                            await Firestore.instance
+                                .collection('profile')
+                                .document(userId)
+                                .updateData({'bloodGroup': value});
+                          },
+                        ),
+                      ),
                     ),
                     ProfileTextBox(
                       name: 'bloodPressure',
@@ -188,9 +283,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       value: userProfile.phoneNumber,
                       title: 'phone number',
                     ),
-                    SizedBox(
-                      height: 25.0,
-                    )
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: FlatButton.icon(
+                        height: 35.0,
+                        color: Colors.red,
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return RichAlertDialog(
+                                  alertTitle: Text(
+                                    "Delete your Account " +
+                                        '\n' +
+                                        "you won't be able to access the app",
+                                    style: TextStyle(fontSize: 22.0),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  alertSubtitle: richSubtitle('Are you Sure '),
+                                  alertType: RichAlertType.WARNING,
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text("Yes",
+                                          style: TextStyle(color: Colors.blue)),
+                                      onPressed: () async {
+                                        await FirebaseAuth.instance
+                                            .currentUser()
+                                            .then((value) => value.delete());
+                                        await Firestore.instance
+                                            .collection("profile")
+                                            .document(userId)
+                                            .delete();
+                                        Navigator.pushNamed(
+                                            context, LoadingScreen.id);
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text("No",
+                                          style: TextStyle(color: Colors.red)),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                        icon: Icon(
+                          Icons.person_add_disabled,
+                          color: Colors.white,
+                        ),
+                        label: Text(
+                          'Delete Account',
+                          style: TextStyle(fontSize: 20.0, color: Colors.white),
+                        ),
+                      ),
+                    ),
                   ],
                 );
               } else {

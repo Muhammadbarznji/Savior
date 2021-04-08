@@ -48,11 +48,11 @@ class _ProfileTextBoxState extends State<ProfileTextBox> {
         ),
         child: TextField(
           controller: controller,
-          onChanged: (v) async {
+          onChanged: (value) async {
             await Firestore.instance
                 .collection('profile')
                 .document(currentUserId)
-                .updateData({widget.name: v});
+                .updateData({widget.name: value});
           },
 
           style: TextStyle(color: Colors.black), //const Color(0xffeeeff1) ),
@@ -74,3 +74,4 @@ class _ProfileTextBoxState extends State<ProfileTextBox> {
     );
   }
 }
+

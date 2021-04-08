@@ -7,8 +7,6 @@ import 'package:testapp/others/auth.dart';
 import 'package:testapp/others/constants.dart';
 import 'package:testapp/screens/home/admin.dart';
 import 'package:testapp/screens/home/home_screen.dart';
-
-import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/screens/loading/onBoarding_screen.dart';
 import 'package:testapp/screens/loading/waiting_screen.dart';
 

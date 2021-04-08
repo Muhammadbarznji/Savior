@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testapp/models/hospital_data.dart';
-import 'package:testapp/others/auth.dart';
 import 'package:testapp/others/constants.dart';
-import 'package:testapp/screens/loading/loading_screen.dart';
 import 'package:testapp/screens/loading/waiting_screen.dart';
 import 'package:testapp/widgets/app_default.dart';
+
+import 'add_new_hospital_screen.dart';
 import 'hospital_detail.dart';
 import 'nearby_hospital_screen.dart';
 
@@ -17,27 +18,71 @@ class Hospital extends StatefulWidget {
 }
 
 class _HospitalState extends State<Hospital> {
+
+  String userId;
+
+
+  @override
+  void initState() {
+    getCurrentUser();
+    super.initState();
+  }
+
+  getCurrentUser() async {
+    await FirebaseAuth.instance.currentUser().then((user) {
+      setState(() {
+        userId = user.uid;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 40.0),
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          child: Icon(
-            Icons.arrow_back,
-            color: Color(0XFF3A6F8D),
-            size: 28.0,
-          ),
+        child:                     new StreamBuilder(
+            stream: Firestore.instance.collection('profile').document(userId).snapshots(),
+            // ignore: missing_return
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return WaittingScreen();
+              }
+              var userDocument = snapshot.data;
+              if(userDocument['role']) {
+                return FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return AddHospitalScreen();
+                        }));
+                  },
+                  backgroundColor: Colors.transparent,
+                  elevation: 0.0,
+                  child: Icon(
+                    Icons.add_business,
+                    color: Colors.red,
+                    size: 55.0,
+                  ),
+                );
+              }else{
+                return FloatingActionButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  backgroundColor: Colors.transparent,
+                  elevation: 0.0,
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Color(0XFF3A6F8D),
+                    size: 28.0,
+                  ),
+                );
+              }
+            }
         ),
+
       ),
-/*      appBar:TestAppAppBar(setcolor: 0xff50d490,),
-        drawer: AppDrawer(),
-        body: ListPage(),*/
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,

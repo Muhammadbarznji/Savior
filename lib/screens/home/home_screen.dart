@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart'
+    as PermissionManager;
+import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
 import 'package:testapp/others/screen_size.dart';
 import 'package:testapp/screens/doctors/doctor_screen.dart';
 import 'package:testapp/screens/emergencysituation/emergency.dart';
 import 'package:testapp/screens/hospital/hospitals_screen.dart';
-import 'package:testapp/screens/hospital/nearby_hospital_screen.dart' as n;
 import 'package:testapp/screens/medkit/firstaid.dart';
 import 'package:testapp/widgets/app_default.dart';
-import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
 import 'package:testapp/widgets/home_screen_widgets.dart';
-import 'package:permission_handler/permission_handler.dart'
-    as PermissionManager;
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'Home_Screen';
@@ -77,7 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = getDeviceWidth(context);
+
+/*    double screenWidth = getDeviceWidth(context);
     double screenHeight = getDeviceHeight(context);
 
     homeScreenTextStyle(String title) {
@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         textAlign: TextAlign.center,
       );
-    }
+    }*/
 
     return Scaffold(
       //endDrawerEnableOpenDragGesture: false,
@@ -272,7 +272,7 @@ class _ListHomeButtonState extends State<ListHomeButton> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 8.7),
-                        child: homeScreenTextStyle('EMG'),
+                        child: homeScreenTextStyle('EMC'),
                       ),
                     ],
                   ),

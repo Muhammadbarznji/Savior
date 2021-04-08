@@ -7,13 +7,14 @@ import 'package:testapp/screens/home/admin.dart';
 import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/hospital/hospitals_screen.dart';
 import 'package:testapp/screens/hospital/nearby_hospital_screen.dart';
-import 'package:testapp/screens/loading/nointernet_screen.dart';
 import 'package:testapp/screens/loading/loading_screen.dart';
+import 'package:testapp/screens/loading/nointernet_screen.dart';
 import 'package:testapp/screens/loading/onBoarding_screen.dart';
 import 'package:testapp/screens/login/login_screen.dart';
 import 'package:testapp/screens/medkit/firstaid.dart';
-import 'package:testapp/screens/medkit/meddetails.dart';
 import 'package:testapp/screens/profile/profile_screen.dart';
+import 'package:testapp/screens/profile/user_list_Screen.dart';
+
 import 'others/auth.dart';
 
 Future<void> main() async {
@@ -31,7 +32,7 @@ class TestApp extends StatelessWidget {
       title: 'Savior App',
       initialRoute: LoadingScreen.id,
       routes: {
-        Admin.id : (context) => Admin(),
+        Admin.id: (context) => Admin(),
         HomeScreen.id: (context) => HomeScreen(),
         LoadingScreen.id: (context) => LoadingScreen(
               auth: Auth(),
@@ -39,6 +40,7 @@ class TestApp extends StatelessWidget {
         LoginScreen.id: (context) => LoginScreen(
               auth: Auth(),
             ),
+        UserListScreen.id: (context) => UserListScreen(),
         ProfileScreen.id: (context) => ProfileScreen(),
         //ProfileEdit.id: (context) => ProfileEdit(),
         Hospital.id: (context) => Hospital(),
