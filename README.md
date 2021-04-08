@@ -89,7 +89,7 @@ width="200" hspace="10" vspace="10">
 width="200" hspace="10" vspace="10">
 
 ### no Internet connection
-<img src="screenshot/nconnection.png" align="center"
+<img src="screenshot/noconnection.png" align="center"
 width="200" hspace="10" vspace="10">
 
 ### Not found Data
