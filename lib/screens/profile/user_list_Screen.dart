@@ -1,94 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:testapp/models/doctor_data.dart';
-import 'package:testapp/models/user.dart';
 import 'package:testapp/others/constants.dart';
-import 'package:testapp/screens/doctors/doctor_detial.dart';
 import 'package:testapp/screens/loading/waiting_screen.dart';
+import 'package:testapp/screens/profile/profile_edit_screen.dart';
 import 'package:testapp/widgets/app_default.dart';
 
-import 'add_new_doctor_screen.dart';
-
-class Doctor extends StatefulWidget {
-  static const String id = 'Doctor';
+class UserListScreen extends StatefulWidget {
+  static const String id = 'User_List_Screen';
 
   @override
-  _DoctorState createState() => _DoctorState();
+  _UserListScreenState createState() => _UserListScreenState();
 }
 
-class _DoctorState extends State<Doctor> {
-  String userId;
-  UserProfile userProfile;
-
-  @override
-  void initState() {
-    getCurrentUser();
-    userProfile = UserProfile(userId);
-    super.initState();
-  }
-
-  getCurrentUser() async {
-    await FirebaseAuth.instance.currentUser().then((user) {
-      setState(() {
-        userId = user.uid;
-      });
-    });
-  }
-
+class _UserListScreenState extends State<UserListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 40.0),
-        child: new StreamBuilder(
-            stream: Firestore.instance
-                .collection('profile')
-                .document(userId)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return WaittingScreen();
-              }
-              var userDocument = snapshot.data;
-              if (userDocument['role']) {
-                return FloatingActionButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return AddNewDoctor();
-                    }));
-                  },
-                  backgroundColor: Colors.transparent,
-                  elevation: 0.0,
-                  child: Icon(
-                    Icons.person_add_alt_1,
-                    color: Colors.red,
-                    size: 50.0,
-                  ),
-                );
-              } else {
-                return FloatingActionButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  backgroundColor: Colors.transparent,
-                  elevation: 0.0,
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Color(0XFF3A6F8D),
-                    size: 28.0,
-                  ),
-                );
-              }
-            }),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          child: Icon(
+            Icons.arrow_back,
+            color: Color(0XFF3A6F8D),
+            size: 28.0,
+          ),
+        ),
       ),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
       drawer: AppDrawer(),
       appBar: TestAppAppBar(
-        settitle: 'Doctor',
+        settitle: 'Users',
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -114,19 +63,14 @@ class _ListPageState extends State<ListPage> {
   List _allResults = [];
   List _resultsList = [];
 
-
-
   ScrollController _scrollController = ScrollController();
   TextEditingController _searchController = TextEditingController();
 
   void initState() {
     super.initState();
-
     _data = getPost();
     _searchController.addListener(_onSearchChanged);
   }
-
-
 
   @override
   void dispose() {
@@ -164,24 +108,8 @@ class _ListPageState extends State<ListPage> {
     });
   }
 
-/*  getUsersPastTripsStreamSnapshots() async {
-    final uid = await Provider.of(context).auth.getCurrentUID();
-    var data = await Firestore.instance
-        .collection('userData')
-        .document(uid)
-        .collection('trips')
-        .where("endDate", isLessThanOrEqualTo: DateTime.now())
-        .orderBy('endDate')
-        .getDocuments();
-    setState(() {
-      _allResults = data.documents;
-    });
-    searchResultsList();
-    return "complete";
-  }*/
-
   getUsersPastTripsStreamSnapshots() async {
-    var data = await Firestore.instance.collection('doctor').getDocuments();
+    var data = await Firestore.instance.collection('profile').getDocuments();
     setState(() {
       _allResults = data.documents;
     });
@@ -191,7 +119,7 @@ class _ListPageState extends State<ListPage> {
 
   Future getPost() async {
     var firestore = await Firestore.instance;
-    QuerySnapshot query = await firestore.collection('doctor').getDocuments();
+    QuerySnapshot query = await firestore.collection('profile').getDocuments();
     return query.documents;
   }
 
@@ -204,7 +132,7 @@ class _ListPageState extends State<ListPage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
               child: Text(
-                "List of Doctor",
+                "List of user",
                 style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -280,34 +208,40 @@ class _ListPageState extends State<ListPage> {
 }
 
 Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
-  final db = Firestore.instance;
-  final doctorData = doctor_data.fromSnapshot(document);
-
-  navigateToDetial(DocumentSnapshot documentSnapshot, String imagepath) {
+  navigateToDetial(DocumentSnapshot documentSnapshot) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => doctorID(
-                  post: documentSnapshot,
-                  imagePath: imagepath,
-                )));
+            builder: (context) => ProfileEditScreen(post: documentSnapshot)));
   }
 
-  pickUpImageForDoctor() {
-    if (doctorData.gender.toString().toLowerCase() == 'male') {
-      return 'assets/images/drMale.png';
-    } else if (doctorData.gender.toString().toLowerCase() == 'female') {
-      return 'assets/images/drFemale.png';
+  _pickUpImageForUser() {
+    if (document.data['role']) {
+      return 'assets/images/administrator.png';
     } else {
-      return 'assets/images/drFemale.png';
+      return 'assets/images/groupuser.png';
     }
   }
 
   return Padding(
     padding: EdgeInsets.only(top: 8.0),
     child: Card(
-      margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+      margin: EdgeInsets.fromLTRB(20.0, 6.0, 10.0, 0.0),
       child: ListTile(
+/*        trailing: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: FlatButton.icon(
+            onPressed: () async {
+              print('delete');
+            },
+            icon: Icon(
+              Icons.delete,
+              color: Colors.red,
+              size: 35.0,
+            ),
+            label: Text(''),
+          ),
+        ),*/
         leading: ConstrainedBox(
           constraints: BoxConstraints(
             minWidth: 67.0,
@@ -317,52 +251,18 @@ Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
           ),
           //child: new Image.network(trip.image),
           child: Image.asset(
-            pickUpImageForDoctor(),
+            _pickUpImageForUser(),
             fit: BoxFit.fill,
           ),
         ),
         title: Text(
-          doctorData.name,
+          document.data['userName'],
           style: TextStyle(fontSize: 20.0),
         ),
-        subtitle: Text(
-          '${doctorData.medicalspecialty} \n'
-          'City: ${doctorData.city} \n'
-          'Work Tome: Form : ${doctorData.workstart}',
-          style: TextStyle(fontSize: 16.0),
-        ),
-        onTap: () => navigateToDetial(document, pickUpImageForDoctor()),
-        onLongPress: () async {
-        },
+        subtitle: Text(document.data['role'] ? 'Admin' : 'User',
+            style: TextStyle(fontSize: 16.0)),
+        onTap: () => navigateToDetial(document),
       ),
     ),
   );
 }
-
-//make a different class for that
-/*
-class DetailPage extends StatefulWidget {
-  final DocumentSnapshot post;
-  DetailPage(this.post);
-  @override
-  _DetailPageState createState() => _DetailPageState();
-}
-class _DetailPageState extends State<DetailPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.post.data['name']),
-      ),
-      body: Container(
-        child: Card(
-          child: ListTile(
-            title: Text(widget.post.data['name']),
-            subtitle: Text(widget.post.data['phone']),
-          ),
-        ),
-      ),
-    );
-  }
-}
-*/
