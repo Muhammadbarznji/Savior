@@ -11,6 +11,7 @@ class _AddNewFirstAidState extends State<AddNewFirstAid> {
   medicalDescriptionController,
       medicalNameController,
       medicalTimeController,
+      doctorController,
       titleController;
 
   final _registerFormKey = GlobalKey<FormState>();
@@ -21,6 +22,7 @@ class _AddNewFirstAidState extends State<AddNewFirstAid> {
     medicalNameController = TextEditingController();
     medicalTimeController = TextEditingController();
     titleController = TextEditingController();
+    doctorController = TextEditingController();
     super.initState();
   }
 
@@ -31,6 +33,7 @@ class _AddNewFirstAidState extends State<AddNewFirstAid> {
         'medname': medicalNameController.text,
         'medtime': medicalTimeController.text,
         'title': titleController.text,
+        'doctor': doctorController.text,
       });
       Navigator.pop(context);
     } catch (e) {
@@ -205,6 +208,36 @@ class _AddNewFirstAidState extends State<AddNewFirstAid> {
                               return 'Please enter medical description';
                             }
                             return null;
+                          },
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(8),
+                        child: TextFormField(
+                          controller: doctorController,
+                          style: TextStyle(),
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hintText: 'Enter Doctor Name (optional)',
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    style: BorderStyle.solid)),
+                            errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.red,
+                                    style: BorderStyle.solid)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.indigo,
+                                    style: BorderStyle.solid)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    style: BorderStyle.solid)),
+                          ),
+                          onChanged: (v) {
+                            _registerFormKey.currentState.validate();
                           },
                         ),
                       ),

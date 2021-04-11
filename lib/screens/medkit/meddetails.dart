@@ -35,12 +35,6 @@ class _MedDetailsState extends State<MedDetails> {
   var location = new Location();
   var currentLocation = LocationData;
 
-  check(){
-    String re = widget.snapshot.data['meddesc'].toString();
-    if(re.startsWith('1-')){
-      return true;
-    }return false;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,9 +136,33 @@ class _MedDetailsState extends State<MedDetails> {
                         SizedBox(
                           height: height * 0.01,
                         ),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'Doctor: ',
+                              style: TextStyle(fontSize: height * 0.03),
+                            ),
+                            WidgetAnimator(
+                              Text(
+
+                                widget.snapshot.data['doctor'] != null ? widget.snapshot.data['doctor']: ' ' ,
+
+                                style: GoogleFonts.averageSans(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: height * 0.03),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
                         Container(
                           width: width,
-                          height: height * 0.43,
+                          height: height * 0.40,
                           decoration: BoxDecoration(
                               border: Border.all(color: Colors.black54),
                               borderRadius: BorderRadius.circular(8)),

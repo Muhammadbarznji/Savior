@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
-                    child: Image.asset('assets/images/loadingimage.jpg'),
+                    child: Image.asset('assets/images/img.jpg'),
                   ),
                   Card(
                     elevation: 3,

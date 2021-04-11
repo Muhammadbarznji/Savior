@@ -243,7 +243,7 @@ class _ListHomeButtonState extends State<ListHomeButton> {
                         child: CardButton(
                           height: screenHeight * 0.2,
                           width: screenWidth * (35 / 100),
-                          imagepath: Image.asset('assets/images/medkit.png'),
+                          imagepath: Image.asset('assets/images/firstaid.png'),
                         ),
                         onTap: () {
                           Navigator.pushNamed(context, FirstAid.id);
@@ -264,7 +264,7 @@ class _ListHomeButtonState extends State<ListHomeButton> {
                         child: CardButton(
                           height: screenHeight * 0.2,
                           width: screenWidth * (35 / 100),
-                          imagepath: Image.asset('assets/images/emergency-call.png'),
+                          imagepath: Image.asset('assets/images/emc.png'),
                         ),
                         onTap: () {
                           Navigator.pushNamed(context, EmergencySituation.id);

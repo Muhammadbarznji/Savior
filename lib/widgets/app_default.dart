@@ -111,7 +111,20 @@ class _AppDrawerState extends State<AppDrawer> {
                         onTap: () {
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
-                            return HomeScreen();
+                                return new StreamBuilder(
+                                    stream: Firestore.instance.collection('profile').document(userId).snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return WaittingScreen();
+                                      }
+                                      var userDocument = snapshot.data;
+                                      if(userDocument['role']) {
+                                        return Admin();
+                                      }else{
+                                        return HomeScreen();
+                                      }
+                                    }
+                                );
                           }));
                         },
                         icon: 'assets/images/home_icon.png',

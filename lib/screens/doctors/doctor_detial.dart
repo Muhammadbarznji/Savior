@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:testapp/others/screen_size.dart';
 
 class doctorID extends StatefulWidget {
   final DocumentSnapshot post;
@@ -39,11 +40,14 @@ class _doctorIDState extends State<doctorID> {
                 SizedBox(
                   width: 15.0,
                 ),
-                Text(
-                  widget.post.data[typeofdata],
-                  style: TextStyle(
-                    //fontWeight: FontWeight.bold,
-                    fontSize: 17.0,
+                Container(
+                  width: getDeviceWidth(context) * 0.8,
+                  child: Text(
+                    widget.post.data[typeofdata] != null ? widget.post.data[typeofdata]:'',
+                    style: TextStyle(
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 17.0,
+                    ),
                   ),
                 ),
               ],
@@ -79,13 +83,15 @@ class _doctorIDState extends State<doctorID> {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        widget.post.data['name'],
-                        style: TextStyle(
-                          color: Color(0XFF3A6F8D),
-                          letterSpacing: 2.0,
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Text(
+                          widget.post.data['name'],
+                          style: TextStyle(
+                            color: Color(0XFF3A6F8D),
+                            letterSpacing: 2.0,
+                              fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       Expanded(
@@ -111,6 +117,11 @@ class _doctorIDState extends State<doctorID> {
               ),
             ),
             buildTextDetial('Medical specialty :', 'medicalspecialty'),
+            Divider(
+              color: Color(0XAA3A6F8D),
+              thickness: 0.7,
+            ),
+            buildTextDetial('Hospital :', 'hospital'),
             Divider(
               color: Color(0XAA3A6F8D),
               thickness: 0.7,

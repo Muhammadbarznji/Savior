@@ -47,13 +47,15 @@ class _DetailPageState extends State<DetailPage> {
                   Center(
                     child: Row(
                       children: [
-                        Text(
-                          widget.post.data['name'],
-                          style: TextStyle(
-                            color: Color(0XFF3A6F8D),
-                            letterSpacing: 2.0,
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: Text(
+                            widget.post.data['name'],
+                            style: TextStyle(
+                              color: Color(0XFF3A6F8D),
+                              letterSpacing: 2.0,
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         Expanded(

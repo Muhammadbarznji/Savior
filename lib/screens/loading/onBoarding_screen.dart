@@ -36,9 +36,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         caption: 'Welcome to Savior',
       ),
       ImageCard(
-        image: 'assets/images/logo.png',
+        image: 'assets/images/emergency-call.png',
         title: 'Savior',
-        caption: 'Welcome to Savior',
+        caption: 'Save your Lover Life',
+      ),
+      ImageCard(
+        image: 'assets/images/map.png',
+        title: 'Savior',
+        caption: 'Recognise the Location',
       ),
     ];
     return Scaffold(

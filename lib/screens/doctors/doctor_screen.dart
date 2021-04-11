@@ -280,7 +280,6 @@ class _ListPageState extends State<ListPage> {
 }
 
 Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
-  final db = Firestore.instance;
   final doctorData = doctor_data.fromSnapshot(document);
 
   navigateToDetial(DocumentSnapshot documentSnapshot, String imagepath) {
@@ -299,7 +298,7 @@ Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
     } else if (doctorData.gender.toString().toLowerCase() == 'female') {
       return 'assets/images/drFemale.png';
     } else {
-      return 'assets/images/drFemale.png';
+      return 'assets/images/drMale.png';
     }
   }
 
