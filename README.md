@@ -5,7 +5,7 @@ Easiest way to manage your health, medicines, emergencies all in one place.
 
 ## Download the App
 [<img src="https://image.flaticon.com/icons/svg/443/443049.svg" align="center"
-width="60" hspace="10" vspace="10">](https://www.mediafire.com/file/9b7c3pxrwrjobpz/app.apk/file)
+width="60" hspace="10" vspace="10">](https://www.mediafire.com/file/ijix3eykne4mn34/app.apk/file)
 <br>
 
 ## About
