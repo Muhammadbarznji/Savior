@@ -150,9 +150,6 @@ class _EmailRegisterState extends State<EmailRegister> {
                             if (value.isEmpty) {
                               return 'Please enter user name';
                             }
-                            if (value.length < 5) {
-                              return 'User Name too small';
-                            }
                             return null;
                           },
                         ),

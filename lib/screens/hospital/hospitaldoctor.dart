@@ -4,7 +4,6 @@ import 'package:testapp/models/doctor_data.dart';
 import 'package:testapp/screens/doctors/doctor_detial.dart';
 import 'package:testapp/screens/loading/waiting_screen.dart';
 
-
 class ListOfDoctorInHospital extends StatefulWidget {
 
   final String hospitalName;
@@ -16,16 +15,14 @@ class ListOfDoctorInHospital extends StatefulWidget {
 }
 
 class _ListOfDoctorInHospitalState extends State<ListOfDoctorInHospital> {
-
   Future _data;
   Future resultsLoaded;
   List _allResults = [];
   List _resultsList = [];
 
   ScrollController _scrollController = ScrollController();
+
   //TextEditingController _searchController = TextEditingController();
-
-
 
   void initState() {
     super.initState();
@@ -51,12 +48,12 @@ class _ListOfDoctorInHospitalState extends State<ListOfDoctorInHospital> {
     searchResultsList();
   }
 
-
   searchResultsList() {
     var showResults = [];
 
     for (var tripSnapshot in _allResults) {
-      var hospital = doctor_data.fromSnapshot(tripSnapshot).hospital.toLowerCase();
+      var hospital =
+          doctor_data.fromSnapshot(tripSnapshot).hospital.toLowerCase();
 
       if (hospital.contains(widget.hospitalName.toLowerCase())) {
         showResults.add(tripSnapshot);
@@ -66,7 +63,6 @@ class _ListOfDoctorInHospitalState extends State<ListOfDoctorInHospital> {
       _resultsList = showResults;
     });
   }
-
 
   getUsersPastTripsStreamSnapshots() async {
     var data = await Firestore.instance.collection('doctor').getDocuments();
@@ -85,80 +81,123 @@ class _ListOfDoctorInHospitalState extends State<ListOfDoctorInHospital> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10.0, 7.0, 0.0, 7.0),
-                child: Text(
-                  "List of Doctor:",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0XFF3A6F8D),
-                      letterSpacing: 1.5),
-                ),
-              ),
-            ],
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+            size: 30.0,
           ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        backgroundColor: Color(0XFF3A6F8D),
+        centerTitle: true,
+        elevation: 0.0,
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0, 7.0, 0.0, 7.0),
+                  child: Text(
+                    "List of Doctor:",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0XFF3A6F8D),
+                        letterSpacing: 1.5),
+                  ),
+                ),
+              ],
+            ),
 /*            Padding(
-            padding:
-            const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 15.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: textInputDecoration.copyWith(
-                hintText: 'Search',
-                suffixIcon: Icon(
-                  Icons.search,
-                  color: Color(0XFF3A6F8D),
-                  size: 27.5,
+              padding:
+              const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 15.0),
+              child: TextField(
+                controller: _searchController,
+                decoration: textInputDecoration.copyWith(
+                  hintText: 'Search',
+                  suffixIcon: Icon(
+                    Icons.search,
+                    color: Color(0XFF3A6F8D),
+                    size: 27.5,
+                  ),
                 ),
               ),
-            ),
-          ),*/
-          Expanded(
-            child: FutureBuilder(
-              future: _data,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return WaittingScreen();
-                } else {
-                  return Theme(
-                    data: ThemeData(
-                      highlightColor: Color(0XFF3A6F8D),
-                    ),
-                    child: Scrollbar(
-                      isAlwaysShown: _resultsList.length > 3 ? true : false,
-                      controller: _scrollController,
-                      thickness: 10.0,
-                      radius: Radius.circular(27.0),
-/*                      child: ListView.builder(
-                        reverse: false,
-                        controller: _scrollController,
-                        itemCount: 50,
-                        itemBuilder: (context, index) => ListTile(
-                          title: Text("Item= ${index + 1}"),
+            ),*/
+            Expanded(
+              child: FutureBuilder(
+                future: _data,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return WaittingScreen();
+                  } else {
+                    if(_resultsList.length < 1){
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/notfound_icon.png',
+                              scale: 3.0,
+                            ),
+                            Text('Sorry can not find any Doctor at this Hospital'),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'Back',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              color: Color(0XFF59C38F),
+                            ),
+                          ],
                         ),
-                      ),*/
-                      child: ListView.builder(
-                        reverse: false,
-                        controller: _scrollController,
-                        itemCount: _resultsList.length,
-                        itemBuilder: (context, index) =>
-                            buildDoctorCard(context, _resultsList[index]),
-                      ),
-                    ),
-                  );
-                }
-              },
+                      );
+                    }else {
+                      return Theme(
+                        data: ThemeData(
+                          highlightColor: Color(0XFF3A6F8D),
+                        ),
+                        child: Scrollbar(
+                          isAlwaysShown: _resultsList.length > 3 ? true : false,
+                          controller: _scrollController,
+                          thickness: 10.0,
+                          radius: Radius.circular(27.0),
+/*                      child: ListView.builder(
+                          reverse: false,
+                          controller: _scrollController,
+                          itemCount: 50,
+                          itemBuilder: (context, index) => ListTile(
+                            title: Text("Item= ${index + 1}"),
+                          ),
+                        ),*/
+                          child: ListView.builder(
+                            reverse: false,
+                            controller: _scrollController,
+                            itemCount: _resultsList.length,
+                            itemBuilder: (context, index) =>
+                                buildDoctorCard(context, _resultsList[index]),
+                          ),
+                        ),
+                      );
+                    }
+                  }
+                },
+              ),
             ),
-          ),
-          SizedBox(
-            height: 25.0,
-          ),
-        ],
+            SizedBox(
+              height: 25.0,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -167,15 +206,20 @@ class _ListOfDoctorInHospitalState extends State<ListOfDoctorInHospital> {
 Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
   final doctorData = doctor_data.fromSnapshot(document);
 
-  navigateToDetial(DocumentSnapshot documentSnapshot,String imagepath) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => doctorID(post: documentSnapshot,imagePath: imagepath,)));
+  navigateToDetial(DocumentSnapshot documentSnapshot, String imagepath) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => doctorID(
+                  post: documentSnapshot,
+                  imagePath: imagepath,
+                )));
   }
 
-  pickUpImageForDoctor(){
-    if(doctorData.gender.toString().toLowerCase() == 'male'){
+  pickUpImageForDoctor() {
+    if (doctorData.gender.toString().toLowerCase() == 'male') {
       return 'assets/images/drMale.png';
-    }else{
+    } else {
       return 'assets/images/drFemale.png';
     }
   }
@@ -193,14 +237,22 @@ Widget buildDoctorCard(BuildContext context, DocumentSnapshot document) {
             maxHeight: 120.0,
           ),
           //child: new Image.network(trip.image),
-          child: Image.asset(pickUpImageForDoctor(),fit: BoxFit.fill,),
+          child: Image.asset(
+            pickUpImageForDoctor(),
+            fit: BoxFit.fill,
+          ),
         ),
-        title: Text(doctorData.name,style: TextStyle(fontSize: 20.0),),
-        subtitle: Text('${doctorData.medicalspecialty} \n'
-            'City: ${doctorData.city} \n'
-            'Work Tome: Form : ${doctorData.workstart}',
-          style: TextStyle(fontSize: 16.0),),
-        onTap: () => navigateToDetial(document,pickUpImageForDoctor()),
+        title: Text(
+          doctorData.name,
+          style: TextStyle(fontSize: 20.0),
+        ),
+        subtitle: Text(
+          '${doctorData.medicalspecialty} \n'
+          'City: ${doctorData.city} \n'
+          'Work Tome: Form : ${doctorData.workstart}',
+          style: TextStyle(fontSize: 16.0),
+        ),
+        onTap: () => navigateToDetial(document, pickUpImageForDoctor()),
       ),
     ),
   );

@@ -72,8 +72,15 @@ class _HospitalListState extends State<HospitalList> {
   bool showSpinner = true;
   HospitalData hospitalData;
   SickLocation sickLocation;
-  String messageText = '', username = '', userId;
-  bool relativesFound = false;
+  String messageTextSelf = '',
+      messageTextSomeoneElse = '',
+      username = '',
+      gender = '',
+      bloodGroup = '',
+      allergies = '',
+      bloodPressure = '',
+      userId;
+  bool relativesFound = false, yourSelf = true;
   UserProfile userProfile;
   FirebaseUser user;
 
@@ -96,14 +103,29 @@ class _HospitalListState extends State<HospitalList> {
         .then((value) {
       setState(() {
         username = value.data['userName'].toString();
+        bloodGroup = value.data['bloodGroup'].toString();
+        bloodPressure = value.data['bloodPressure'].toString();
+        gender = value.data['gender'].toString();
+        allergies = value.data['allergies'].toString();
       });
     });
   }
 
   getLocationDetails() async {
     await sickLocation.getLocationData();
-    messageText =
-        'Hey , This is $username, find me at ${sickLocation.address} .\n Link to my location : ${sickLocation.url}';
+    messageTextSelf = 'Hey , This is $username , I need help\n'
+        'Blood Group: $bloodGroup \n'
+        'Blood Pressure: $bloodPressure \n'
+        'Gender: $gender \n'
+        'Allergies: $allergies, \n'
+        'find me at ${sickLocation.address} .\n Link to my location : ${sickLocation.url}';
+    return sickLocation;
+  }
+
+  getLocationDetails1() async {
+    await sickLocation.getLocationData();
+    messageTextSomeoneElse = 'Hey , This is $username, someone need help'
+        'find me at ${sickLocation.address} .\n Link to my location : ${sickLocation.url}';
     return sickLocation;
   }
 
@@ -144,6 +166,7 @@ class _HospitalListState extends State<HospitalList> {
     sickLocation = SickLocation();
     recipients = List<String>();
     getLocationDetails();
+    getLocationDetails1();
   }
 
   @override
@@ -218,7 +241,7 @@ class _HospitalListState extends State<HospitalList> {
                                   return RichAlertDialog(
                                     alertTitle: richTitle("Alert Relatives"),
                                     alertSubtitle:
-                                        richSubtitle('Are you Sure '),
+                                        richSubtitle('This service is for you?'),
                                     alertType: RichAlertType.INFO,
                                     actions: <Widget>[
                                       FlatButton(
@@ -226,16 +249,19 @@ class _HospitalListState extends State<HospitalList> {
                                         onPressed: () async {
                                           if (relativesFound) {
                                             Navigator.pop(context);
-                                            print('hello from sms');
-                                            _sendSMS(messageText, recipients);
-                                            print(messageText);
+                                            _sendSMS(messageTextSelf, recipients);
+                                            print(messageTextSelf);
                                           }
                                         },
                                       ),
                                       FlatButton(
                                         child: Text("No"),
                                         onPressed: () {
-                                          Navigator.pop(context);
+                                          if (relativesFound) {
+                                            Navigator.pop(context);
+                                            _sendSMS(messageTextSomeoneElse, recipients);
+                                            print(messageTextSomeoneElse);
+                                          }
                                         },
                                       ),
                                     ],
