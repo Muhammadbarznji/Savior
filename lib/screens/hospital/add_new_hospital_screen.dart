@@ -44,7 +44,7 @@ class _AddHospitalScreenState extends State<AddHospitalScreen> {
         'info': informationController.text,
         'general': generalController.text,
         'image':
-            'https://lh3.googleusercontent.com/proxy/8i-f6RaIqfDELbnLZNoprNl0xyVGONMUoZ_xrxB9_ZAW99tAau_o7fUblwjgAm2nlwH11zUzTZFj0Owe-77pWl3p6W-K-Hy6YuO3u7mcDAk',
+            'https://firebasestorage.googleapis.com/v0/b/test-app-5764a.appspot.com/o/logo.png?alt=media&token=ac4f26cf-6e3f-4c96-b779-b75f82280340',
       });
       Navigator.pop(context);
     } catch (e) {
