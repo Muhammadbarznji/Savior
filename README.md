@@ -141,6 +141,8 @@ On Android versions prior to Android 6.0, Savior requires the following permissi
 
 - Access Current Location: Current location access required for informing the point of contact.
 
+- Storage: For uploading PDF file.
+
 ## Contributing
 
 Any contributions are welcome. Here are a few ways you can help:
