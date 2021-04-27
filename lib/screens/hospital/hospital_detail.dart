@@ -17,6 +17,82 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
+
+    Dialog contactDialog = Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      child: Container(
+        height: 220.0,
+        width: 300.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: InkWell(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/phone-call.png',
+                      scale: 5.5,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 15.0)),
+                    Text(
+                      'Call',
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 24.0,
+                      ),
+                    ),
+                  ],
+                ),
+                onTap: () async{
+                  await launch("tel://${widget.post.data['phone']}");
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: InkWell(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/send-message.png',
+                      scale: 5.5,
+                    ),
+                    Padding(padding: EdgeInsets.only(left: 15.0)),
+                    Text(
+                      'Message',
+                      style: TextStyle(
+                        color: Colors.yellow[600],
+                        fontSize: 24.0,
+                      ),
+                    ),
+                  ],
+                ),
+                onTap: () async{
+                  String uri = 'sms:${widget.post.data['phone']}?body=';
+                  await launch(uri);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            Padding(padding: EdgeInsets.only(top: 15.0)),
+            FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.red, fontSize: 18.0),
+                ))
+          ],
+        ),
+      ),
+    );
+
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -61,7 +137,7 @@ class _DetailPageState extends State<DetailPage> {
                         ),
                         Expanded(
                           child: CircleAvatar(
-                            child: Image.asset('assets/images/pharmacy.png'),
+                            child: Image.network( widget.post.data['image']),
                             radius: 45.0,
                             //backgroundImage: Image.network(''),
                             //backgroundImage:AssetImage('assets/images/pharmacy.png',),
@@ -123,7 +199,7 @@ class _DetailPageState extends State<DetailPage> {
                     ],
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 15.0,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,6 +230,10 @@ class _DetailPageState extends State<DetailPage> {
                               style: TextStyle(fontSize: 17.0),
                             ),
                             onTap: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                  contactDialog);
                               //launch("tel://${widget.post.data['phone']}");
                               //String uri = 'sms:${widget.post.data['phone']}?body=hello%20there';
                               //await launch(uri);
@@ -164,7 +244,7 @@ class _DetailPageState extends State<DetailPage> {
                     ],
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 15.0,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,13 +319,21 @@ class _DetailPageState extends State<DetailPage> {
                                       width: 5.0,
                                     ),
                                     InkWell(
-                                      child: Text(
-                                        widget.post.data['web'],
-                                        style: TextStyle(
-                                            fontSize: 17.0, color: Colors.blue),
+                                      child: SingleChildScrollView(
+                                        child: Text(
+                                          //Uri.parse().host,
+                                          //widget.post.data['web'].toString().replaceAll(widget.post.data['web'].toString().replaceAll(RegExp(r"(\w|-)+(?=(\.(com|net|org|info|coop|int|co|ac|ie|co|ai|eu|ca|icu|top|xyz|tk|cn|ga|cf|nl|us|eu|de|hk|am|tv|bingo|blackfriday|gov|edu|mil|arpa|au|ru)(\.|\/|$)))"),'q'),'a')
+
+                                          widget.post.data['web'],
+                                          style: TextStyle(
+                                              fontSize: 17.0,
+                                              color: Colors.blue),
+                                        ),
                                       ),
                                       onTap: () async {
-                                        const url = "https://cmcph.net";
+                                        //String url = widget.post.data['web'].toString();
+                                        String url = 'http://www.' +
+                                            widget.post.data['web'];
                                         if (await canLaunch(url))
                                           await launch(url);
                                         else
@@ -261,7 +349,36 @@ class _DetailPageState extends State<DetailPage> {
                         ],
                       ),
                       SizedBox(
-                        height: 20.0,
+                        height: 15.0,
+                      ),
+
+                      Text(
+                        'General:',
+                        style: TextStyle(
+                          color: Color(0XFF3A6F8D),
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 6.2,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 15.0,
+                          ),
+                          Text(
+                            widget.post.data['general'].toString().toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 17.0,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(
+                        height: 15.0,
                       ),
                       Text(
                         'More information:',
@@ -281,7 +398,7 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                           Container(
                             width: getDeviceWidth(context) * 0.8,
-                            height: getDeviceWidth(context) * 0.42,
+                            height: getDeviceWidth(context) * 0.33,
                             child: SingleChildScrollView(
                               child: Text(
                                 widget.post.data['info'],

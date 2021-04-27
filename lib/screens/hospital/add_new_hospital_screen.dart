@@ -12,8 +12,9 @@ class _AddHospitalScreenState extends State<AddHospitalScreen> {
       phoneController,
       emailController,
       addressController,
-  informationController,
-  webSiteController;
+      informationController,
+      webSiteController,
+      generalController;
 
   final _registerFormKey = GlobalKey<FormState>();
 
@@ -25,6 +26,7 @@ class _AddHospitalScreenState extends State<AddHospitalScreen> {
     addressController = TextEditingController();
     informationController = TextEditingController();
     webSiteController = TextEditingController();
+    generalController = TextEditingController();
 
     regPhoneNumber = RegExp(
         r"\s*(?:(\d{1,3}))?[-. (]*(\d{3,4})[-. )]*(\d{3})[-. ]*(\d{6})(?: *x(\d+))?\s*$");
@@ -32,7 +34,7 @@ class _AddHospitalScreenState extends State<AddHospitalScreen> {
     super.initState();
   }
 
-  Future addFisrtAid() async {
+  Future addHospital() async {
     try {
       await Firestore.instance.collection('hospital').document().setData({
         'name': nameController.text,
@@ -40,6 +42,7 @@ class _AddHospitalScreenState extends State<AddHospitalScreen> {
         'email': emailController.text,
         'address': addressController.text,
         'info': informationController.text,
+        'general': generalController.text,
         'image':
             'https://lh3.googleusercontent.com/proxy/8i-f6RaIqfDELbnLZNoprNl0xyVGONMUoZ_xrxB9_ZAW99tAau_o7fUblwjgAm2nlwH11zUzTZFj0Owe-77pWl3p6W-K-Hy6YuO3u7mcDAk',
       });
@@ -267,13 +270,50 @@ class _AddHospitalScreenState extends State<AddHospitalScreen> {
                       Container(
                         margin: EdgeInsets.all(8),
                         child: TextFormField(
+                          controller: generalController,
+                          style: TextStyle(),
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            hintText: 'General',
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    style: BorderStyle.solid)),
+                            errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.red,
+                                    style: BorderStyle.solid)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.indigo,
+                                    style: BorderStyle.solid)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    style: BorderStyle.solid)),
+                          ),
+                          onChanged: (v) {
+                            _registerFormKey.currentState.validate();
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter General';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(8),
+                        child: TextFormField(
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
                           controller: informationController,
                           style: TextStyle(),
                           //keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 25.0, horizontal: 10.0),
                             hintText: 'Information',
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(
@@ -318,7 +358,7 @@ class _AddHospitalScreenState extends State<AddHospitalScreen> {
                         padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
                         onPressed: () async {
                           if (_registerFormKey.currentState.validate()) {
-                            await addFisrtAid();
+                            await addHospital();
                           }
                         },
                         label: Text(

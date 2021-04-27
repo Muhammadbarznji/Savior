@@ -13,7 +13,8 @@ class doctor_data {
       universityofspecialization,
       workstart,
       hospital,
-      gender;
+      gender,
+  pdf;
 
   doctor_data({
     this.address,
@@ -29,6 +30,7 @@ class doctor_data {
     this.workstart,
     this.gender,
     this.hospital,
+    this.pdf,
   });
 
   // formatting for upload to Firbase when creating the trip
@@ -46,6 +48,7 @@ class doctor_data {
         'workstart': workstart,
         'gender': gender,
         'hospital': hospital,
+    'pdf':pdf,
       };
 
   // creating a Trip object from a firebase snapshot
@@ -62,5 +65,6 @@ class doctor_data {
         universityofspecialization = snapshot['universityofspecialization'],
         workstart = snapshot['workstart'],
         gender = snapshot['gender'],
-        hospital = snapshot['hospital'];
+        hospital = snapshot['hospital'],
+  pdf = snapshot['pdf'];
 }

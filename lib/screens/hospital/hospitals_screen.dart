@@ -313,7 +313,7 @@ Widget buildHospitalCard(BuildContext context, DocumentSnapshot document) {
             maxHeight: 60,
           ),
           //child: new Image.network(hospitalData.image),
-          child: Image.asset('assets/images/logo.png'),
+          child: Image.network(hospitalData.image),
         ),
         title: Text(hospitalData.name),
         subtitle: Text(hospitalData.phone),

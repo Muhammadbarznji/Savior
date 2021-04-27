@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class hospital_data {
-  String name, phone, image, address, info, web;
+  String name, phone, image, address, info, web, general;
 
   hospital_data(
     this.name,
@@ -10,6 +10,7 @@ class hospital_data {
     this.address,
     this.info,
     this.web,
+    this.general,
   );
 
   // formatting for upload to Firbase when creating the trip
@@ -20,6 +21,7 @@ class hospital_data {
         'address': address,
         'info': info,
         'web': web,
+        'general': general,
       };
 
   // creating a Trip object from a firebase snapshot
@@ -29,5 +31,6 @@ class hospital_data {
         image = snapshot['image'],
         address = snapshot['address'],
         info = snapshot['info'],
+        general = snapshot['general'],
         web = snapshot['web'];
 }

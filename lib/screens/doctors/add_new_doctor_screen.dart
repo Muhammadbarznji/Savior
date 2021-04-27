@@ -1,5 +1,13 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:testapp/others/screen_size.dart';
+
+
+
 
 class AddNewDoctor extends StatefulWidget {
   @override
@@ -7,6 +15,7 @@ class AddNewDoctor extends StatefulWidget {
 }
 
 class _AddNewDoctorState extends State<AddNewDoctor> {
+
   RegExp regPhoneNumber;
   TextEditingController docNameController,
       phoneNumberController,
@@ -21,7 +30,8 @@ class _AddNewDoctorState extends State<AddNewDoctor> {
       universityofspecializationController,
       workstartController;
 
-  String gender;
+  String gender, pdfUrl = '';
+  bool _isButtonEnable = false;
 
   final List<String> genderList = ['Male', 'Female', 'Not say'];
   final _registerFormKey = GlobalKey<FormState>();
@@ -43,7 +53,6 @@ class _AddNewDoctorState extends State<AddNewDoctor> {
 
     regPhoneNumber = RegExp(
         r"\s*(?:(\d{1,3}))?[-. (]*(\d{3,4})[-. )]*(\d{3})[-. ]*(\d{6})(?: *x(\d+))?\s*$");
-
     super.initState();
   }
 
@@ -63,12 +72,35 @@ class _AddNewDoctorState extends State<AddNewDoctor> {
         'otherexperiances': otherExperienceController.text,
         'universityofspecialization': universityofspecializationController.text,
         'workstart': workstartController.text,
+        'pdf':pdfUrl,
       });
       Navigator.pop(context);
     } catch (e) {
       print(e.toString());
     }
   }
+
+
+  Future getPdfAndUpload()async{
+    Random rng = new Random();
+    String randomName="";
+    for (var i = 0; i < 20; i++) {
+      //generate
+      randomName += rng.nextInt(100).toString();
+    }
+    File file = await FilePicker.getFile(type: FileType.custom);
+    String fileName = '${randomName}.pdf';
+    savePdf(file.readAsBytesSync(), fileName);
+  }
+
+  savePdf(List<int> asset, String name) async {
+    StorageReference reference = FirebaseStorage.instance.ref().child(name);
+    StorageUploadTask uploadTask = reference.putData(asset);
+    pdfUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    //documentFileUpload(imageUrl);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -582,6 +614,27 @@ class _AddNewDoctorState extends State<AddNewDoctor> {
                           },
                         ),
                       ),
+                      FlatButton.icon(
+                        minWidth: getDeviceWidth(context) * 0.85,
+                        icon: Icon(
+                          Icons.picture_as_pdf,
+                          color: Colors.white,
+                        ),
+                        color: Colors.blue,
+                        padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
+
+                        onPressed: () async {
+                          await getPdfAndUpload();
+                          setState(() {
+                              _isButtonEnable = true;
+                          });
+
+                        },
+                        label: Text(
+                          ' Upload CV ',
+                          style: TextStyle(color: Colors.white, fontSize: 22),
+                        ),
+                      ),
                       SizedBox(
                         height: 15,
                       ),
@@ -596,7 +649,7 @@ class _AddNewDoctorState extends State<AddNewDoctor> {
                         color: Colors.green.shade300,
                         padding: EdgeInsets.fromLTRB(30, 12, 30, 12),
                         onPressed: () async {
-                          if (_registerFormKey.currentState.validate()) {
+                          if (_registerFormKey.currentState.validate() && _isButtonEnable) {
                             await addDoctor();
                           }
                         },
@@ -622,26 +675,7 @@ class _AddNewDoctorState extends State<AddNewDoctor> {
                                   size: MediaQuery.of(context).size.height *
                                       0.045,
                                 )),
-/*                            child: Text(
-                              'Already have an account? ',
-                              style: TextStyle(
-                                  fontSize: 17, fontWeight: FontWeight.w500),
-                            ),*/
                           ),
-/*                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              child: Text('Log in',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.blue,
-                                    decoration: TextDecoration.underline,
-                                  )),
-                            ),
-                          ),*/
                         ],
                       ),
                       SizedBox(
