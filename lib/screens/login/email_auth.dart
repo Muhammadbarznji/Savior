@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testapp/screens/loading/onBoarding_screen.dart';
+import 'package:testapp/screens/login/verifyemail_screen.dart';
 
 class EmailRegister extends StatefulWidget {
   @override
@@ -88,6 +89,12 @@ class _EmailRegisterState extends State<EmailRegister> {
         print(e.toString());
       }
     });
+  }
+
+  bool validatePasswordStructure(String value){
+    String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = new RegExp(pattern);
+    return regExp.hasMatch(value);
   }
 
   @override
@@ -209,7 +216,7 @@ class _EmailRegisterState extends State<EmailRegister> {
                             if (value.isEmpty) {
                               return 'Please enter email';
                             }
-                            if (!value.contains('@') || value.length < 5) {
+                            if (!value.contains('@')) {
                               return 'Enter Valid Email';
                             }
                             return null;
@@ -271,8 +278,9 @@ class _EmailRegisterState extends State<EmailRegister> {
                             if (value.isEmpty) {
                               return 'Please enter password';
                             }
-                            if (value.length < 8) {
-                              return 'Password must be more than 8 characters';
+                            if (!validatePasswordStructure(value)) {
+                              return 'Password must contain Uppercase, Lowercase,'
+                                  '\n Number and  Special Character';
                             }
 
                             return null;
@@ -312,9 +320,6 @@ class _EmailRegisterState extends State<EmailRegister> {
                           validator: (value) {
                             if (value.isEmpty) {
                               return 'Please enter password';
-                            }
-                            if (value.length < 8) {
-                              return 'Password must be more than 8 characters';
                             }
                             if (value != passwordController.text) {
                               return 'Password does not match';

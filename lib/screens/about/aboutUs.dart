@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:testapp/screens/home/home_screen.dart';
-import 'package:testapp/widgets/app_default.dart';
 
 class AboutUs extends StatelessWidget {
   @override
@@ -65,11 +64,11 @@ class AboutUs extends StatelessWidget {
                       ),
                       Text(
                         'Rayan Ibrahim'
-                        '\n Muhammad Azad'
+                        '\n Bnar Saeed'
                         '\nSazan Hamad'
-                        '\n Noora fkry'
+                        '\n Noora Fkry'
                         '\n Ziba Muhammad'
-                        '\n Bnar saaed',
+                        '\n Muhammad Azad',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: height * 0.024),
                       ),

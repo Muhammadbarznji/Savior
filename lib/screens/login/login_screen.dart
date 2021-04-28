@@ -9,6 +9,7 @@ import 'package:testapp/screens/home/admin.dart';
 import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/loading/onBoarding_screen.dart';
 import 'package:testapp/screens/loading/waiting_screen.dart';
+import 'package:testapp/screens/login/reset.dart';
 
 import 'email_auth.dart';
 
@@ -125,8 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if (value.isEmpty) {
                                     return 'Please enter email';
                                   }
-                                  if (!value.contains('@') ||
-                                      value.length < 5) {
+                                  if (!value.contains('@')) {
                                     return 'Enter Valid Email';
                                   }
                                   return null;
@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.all(8),
+                              margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
                               child: TextFormField(
                                 controller: passwordController,
                                 style: TextStyle(),
@@ -171,21 +171,31 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if (value.length < 8) {
                                     return 'Password must be more than 8 characters';
                                   }
-
                                   return null;
                                 },
                               ),
                             ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              error,
-                              style:
-                                  TextStyle(color: Colors.red, fontSize: 14.0),
-                            ),
-                            SizedBox(
-                              height: 8,
+                            if (error != '')
+                              SizedBox(
+                                height: 8,
+                              ),
+                            if (error != '')
+                              Text(
+                                error,
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 14.0),
+                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  child: Text('Forgot Password?'),
+                                  onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => ResetScreen()),
+                                  ),
+                                )
+                              ],
                             ),
                             RaisedButton.icon(
                               label: Text(

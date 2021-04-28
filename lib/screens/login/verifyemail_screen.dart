@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:testapp/screens/home/home_screen.dart';
 import 'package:testapp/screens/loading/onBoarding_screen.dart';
 
 class VerifyScreen extends StatefulWidget {
@@ -53,7 +54,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
       timer.cancel();
       print('verified email');
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return OnBoardingScreen();
+        return HomeScreen();
       }));
     }
   }
