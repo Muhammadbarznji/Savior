@@ -218,7 +218,7 @@ class _AddNewFirstAidState extends State<AddNewFirstAid> {
                           style: TextStyle(),
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                            hintText: 'Enter Doctor Name (optional)',
+                            hintText: 'Enter Doctor Name',
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.blue,
