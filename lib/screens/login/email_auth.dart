@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testapp/screens/loading/onBoarding_screen.dart';
-import 'package:testapp/screens/login/verifyemail_screen.dart';
 
 class EmailRegister extends StatefulWidget {
   @override
@@ -106,7 +105,7 @@ class _EmailRegisterState extends State<EmailRegister> {
           children: <Widget>[
             Container(
               height: MediaQuery.of(context).size.height / 3,
-              child: Image.asset('assets/images/loadingimage.jpg'),
+              child: Image.asset('assets/images/img.jpg'),
             ),
             Form(
               key: _registerFormKey,
