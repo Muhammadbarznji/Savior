@@ -29,7 +29,7 @@ The app shows nearby hospitals,  an option to alert emergency contacts, sos butt
 
 ### User Home Screen
 
-<img src="screenshot/home_user.png" align="center"
+<img src="screenshot/home.png" align="center"
 width="200" hspace="10" vspace="10">
 
 ### Admin Home Screen
