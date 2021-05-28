@@ -16,7 +16,7 @@ class UserProfile {
 
   UserProfile(this.uid);
 
-  setData(Map<String, dynamic> data) {
+  getData(Map<String, dynamic> data) {
     this.uid = data['uid'];
     this.phoneNumber = data['phoneNumber'];
     this.age = data['age'];
@@ -31,6 +31,5 @@ class UserProfile {
     this.userName = data['userName'];
     this.allergies = data['allergies'];
     this.role = data['role'];
-    return this;
   }
 }
