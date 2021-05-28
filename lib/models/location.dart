@@ -23,8 +23,6 @@ class UserLocation {
             .then((value) {
           position = value;
         });
-        userLocation.longitude = this.longitude = position.longitude;
-        userLocation.latitude = this.latitude = position.latitude;
       } else {
         userLocation.longitude = this.longitude = pos.longitude;
         userLocation.latitude = this.latitude = pos.latitude;
@@ -32,6 +30,5 @@ class UserLocation {
     } catch (e) {
       print(e);
     }
-    return userLocation;
   }
 }
