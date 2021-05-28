@@ -46,7 +46,6 @@ class TestApp extends StatelessWidget {
         Hospital.id: (context) => Hospital(),
         Doctor.id: (context) => Doctor(),
         FirstAid.id: (context) => FirstAid(),
-        NearbyHospitalScreen.id: (context) => NearbyHospitalScreen(),
         NoInternetConnection.id: (context) => NoInternetConnection(),
         EmergencySituation.id: (context) => EmergencySituation(),
         OnBoardingScreen.id: (context) => OnBoardingScreen(),
