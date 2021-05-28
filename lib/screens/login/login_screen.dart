@@ -315,11 +315,11 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!showOnBoarding) {
         await getCurrentUser();
         await Firestore.instance
-            .collection('profile')
+            .collection('client')
             .document(userId)
             .get()
             .then((DocumentSnapshot) => {
-                  userRole = DocumentSnapshot.data['role'],
+                  userRole = DocumentSnapshot.data['Role'],
                   if (userRole)
                     {
                       Navigator.pushReplacementNamed(context, Admin.id),
@@ -329,8 +329,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushReplacementNamed(context, HomeScreen.id),
                     }
                 });
-      } else {
-        Navigator.pushReplacementNamed(context, OnBoardingScreen.id);
       }
     });
 
@@ -342,11 +340,4 @@ class _LoginScreenState extends State<LoginScreen> {
       userId = user.uid;
     });
   }
-
-/*  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }*/
 }
