@@ -14,7 +14,7 @@ import 'package:testapp/screens/loading/waiting_screen.dart';
 import 'package:testapp/screens/login/login_screen.dart';
 
 class LoadingScreen extends StatefulWidget {
-  static const String id = 'Loading_Screen';
+  static const String id = 'Loading_Scren';
 
   LoadingScreen({@required this.auth});
 
@@ -57,7 +57,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     }
 
     if (!mounted) {
-      return Future.value(null);
+      return Future.value(10);
     }
 
     return _updateConnectionStatus(result);
@@ -89,13 +89,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
                   );
                 } else {
                     return new StreamBuilder(
-                        stream: Firestore.instance.collection('profile').document(user.uid).snapshots(),
+                        stream: Firestore.instance.collection('Client').document(user.uid).snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return WaittingScreen();
                           }
                           var userDocument = snapshot.data;
-                          if(userDocument['role']) {
+                          if(userDocument['Role']) {
                             return Admin();
                           }else{
                             return HomeScreen();
@@ -151,6 +151,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 );
               }
             })
-        : NoInternetConnection();
+        :;
   }
 }
