@@ -39,7 +39,7 @@ class _EmailRegisterState extends State<EmailRegister> {
     confirmPasswordController = TextEditingController();
 
     regPhoneNumber = RegExp(
-        r"\s*(?:(\d{1,3}))?[-. (]*(\d{3,4})[-. )]*(\d{3})[-. ]*(\d{6})(?: *x(\d+))?\s*$");
+        r"\s*(?:(\d{1,3}))?[-. (]-(\d{3,4})[-. )]*(\d{7})[-. ]*(\d{6})(?: +x(\d+))?\s-$");
 
     super.initState();
   }
@@ -91,7 +91,7 @@ class _EmailRegisterState extends State<EmailRegister> {
   }
 
   bool validatePasswordStructure(String value){
-    String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    String  pattern = r'^(?=.*?[A-Z])(?=*[a-z])(?=.*?[0-9])(?=*[!#\$&*~]).{10,}$';
     RegExp regExp = new RegExp(pattern);
     return regExp.hasMatch(value);
   }
