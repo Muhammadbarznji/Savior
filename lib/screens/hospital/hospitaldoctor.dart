@@ -52,10 +52,10 @@ class _ListOfDoctorInHospitalState extends State<ListOfDoctorInHospital> {
     var showResults = [];
 
     for (var tripSnapshot in _allResults) {
-      var hospital =
+      var doctor_hospital_name =
           doctor_data.fromSnapshot(tripSnapshot).hospital.toLowerCase();
 
-      if (hospital.contains(widget.hospitalName.toLowerCase())) {
+      if (doctor_hospital_name.contains(widget.hospitalName.toLowerCase())) {
         showResults.add(tripSnapshot);
       }
     }
